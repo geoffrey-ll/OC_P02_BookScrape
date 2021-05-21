@@ -85,6 +85,7 @@ scrapInformationVoulues()
 # lectureCSV('leFichier')
 
 
+
 """ IDÉE
 
 Si class identique pour plussieurs infosARechercher ET si id simmilaire ALORS ce servir du nom variable dans une
