@@ -85,6 +85,9 @@ scrapInformationVoulues()
 # lectureCSV('leFichier')
 
 
+def toutesURLCategory ():
+
+
 
 """ IDÉE
 
