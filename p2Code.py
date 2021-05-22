@@ -2,9 +2,9 @@ import requests as rq
 from bs4 import BeautifulSoup
 import csv
 
-url = 'http://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html'
+urlLivre = 'http://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html'
 
-response = rq.get(url)
+response = rq.get(urlLivre)
 
 enTete = ['product_page_url', 'universal_product_code (upc)', 'title']
 
@@ -48,7 +48,7 @@ def scrapInformationVoulues():
         image = soup.findAll('img')[0].attrs.get('src')
 
     # Ajout de l'url de la page
-        informationVoulues['product_page_url'] = url
+        informationVoulues['product_page_url'] = urlLivre
     # Ajout des informations issues de tds
         informationVoulues['universal_product_code (upc)'] = tds[0].text
         informationVoulues['price_excluding_tax'] = tds[2].text.replace('.', ',').replace('Â', '').replace('\u00A3',
@@ -81,17 +81,54 @@ def scrapInformationVoulues():
 
 
 
-scrapInformationVoulues()
-# lectureCSV('leFichier')
+# scrapInformationVoulues()
+#  lectureCSV('leFichier')
 
 
 def toutesURLCategory ():
+    urlCategoryyHome = 'http://books.toscrape.com/catalogue/category/books/travel_2/index.html'
 
+    responseHomeCategory = rq.get(urlCategoryyHome)
 
+    if responseHomeCategory.ok:
+        soupHome = BeautifulSoup(responseHomeCategory.text, 'html.parser')
+        liIndicationNombrePages = soupHome.findAll('li')[-2:]
+        quantiteLivreCategory = soupHome.findAll('form', {'class': 'form-horizontal'})[0].find('strong').text
+
+    # Récupération de toutes les pages d'une category
+    # Si la category a plus de 20 livres alors elle a plus que la page http://../index.html
+        if int(quantiteLivreCategory) > 20:
+            urlAutresPages = []
+            pageCouranteCategory = [liIndicationNombrePages[0].text][0][35]
+            pageTotalCategory = [liIndicationNombrePages[0].text][0][40]
+            for i in range(1, int(pageTotalCategory)):
+                if int(pageCouranteCategory) < int(pageTotalCategory):
+                    urlAutresPages.append(urlCategoryyHome[:-10] + 'page-' + str(i+1) + '.html')
+                    pageCouranteCategory = int(pageCouranteCategory) + 1
+
+            urlPagesCategory = [urlCategoryyHome] + urlAutresPages
+    #Si la cetegory a moins de 20 livres alors la category n'a que la page http://../index.html
+        else:
+            urlPagesCategory = [urlCategoryyHome]
+
+    # Récupération des URL de tous les livres de toutes les pages de la  category
+        urlLivresDeLaCategroy = []
+        for url in urlPagesCategory:
+            responsePagesCategory = rq.get(url)
+            soupPages = BeautifulSoup(responsePagesCategory.text, 'html.parser')
+            h3sLivresAffichésPArPage = soupPages.findAll('h3')
+            for h3Livre in h3sLivresAffichésPArPage:
+                aLivre = h3Livre.find('a')
+                urlLivresDeLaCategroy.append('http://books.toscrape.com/catalogue/' + aLivre['href'][9:])
+
+    # scrapInformationVoulues(urlLivresDeLaCategroy)
+
+toutesURLCategory()
 
 """ IDÉE
 
 Si class identique pour plussieurs infosARechercher ET si id simmilaire ALORS ce servir du nom variable dans une
 boucle pour recupérer toutes les infos avec la boucle.
-country = soup.find('tr', {'id': 'placse_' + str(nameRecherche) + '__row'}).find('td', {'class': 'laClasse})
+cou
+ntry = soup.find('tr', {'id': 'placse_' + str(nameRecherche) + '__row'}).find('td', {'class': 'laClasse})
 """
