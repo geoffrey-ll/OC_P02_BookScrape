@@ -42,9 +42,11 @@ enTete = ['product_page_url', 'universal_product_code (upc)', 'title']
 ### Fonction pour écrire dans un .csv les infortions récoltées ###
 def ecritureCSV(infosAEcrire):
     quantiteValeurParCle = len(infosAEcrire['title'])
-# Il n'est pas utile d'indiquer que le .csv doit être traiter en tant que utf-8 car toutes les valeurs du
-# dictionnaire informationsVoulues sont en utf-8 (action réalise dans la fonction scrapInformationsVoulues
-    with open('leFichier.csv', 'w') as file:
+# Même si toutes les valeurs du dictionnaire informationsVoulues{} sont censé être en utf-8
+# il faut quant même encoder le .csv en utf-8 car j'ai eu une erreur pour la catégorie christian à cause d'un espace
+# insécable (\xà0) qui n'était pas utf-8.
+# Présicer encodage du .csv m'a levée cette erreur.
+    with open('leFichier.csv', 'w', encoding='utf-8') as file:
         # En-tête du fichier. Sert comme nom de colonnes
         file.write('product_page_url|universal_product_code (upc)|title|price_including_tax|'
                    'price_excluding_tax|number_available|product_description|category|'
@@ -54,7 +56,8 @@ def ecritureCSV(infosAEcrire):
         for iemeValeur in range(quantiteValeurParCle):
             for cleDicoInformationsVoulues in infosAEcrire.keys():
                 file.write(infosAEcrire.get(cleDicoInformationsVoulues)[iemeValeur] + '|')
-            file.write('\n')
+            if iemeValeur < quantiteValeurParCle - 1:
+                file.write('\n')
 
 ### Fonction pour lire le .csv contenant les informations récoltées ###
 def lectureCSV(infosALire):
@@ -64,8 +67,8 @@ def lectureCSV(infosALire):
 
 
 ### Fonction pour récupérer toutes les informations voulues sur l'url d'un livre ###
-def scrapInformationsVoulues(urlLivre):
-    informationVoulues = {  'product_page_url': [],
+def scrap_data(urlLivre):
+    informationVoulues = { 'product_page_url': [],
                             'universal_product_code (upc)': [],
                             'title': [],
                             'price_including_tax': [],
@@ -78,7 +81,6 @@ def scrapInformationsVoulues(urlLivre):
 
     for urlATraiter in urlLivre:
         response_urlLivres = rq.get(urlATraiter)
-
 
         if response_urlLivres.ok:
 
@@ -101,9 +103,9 @@ def scrapInformationsVoulues(urlLivre):
             # Le caractère unicode "\u00A3" est celui de la livre Sterling on ajoute un espace après celui-ci
             # Remplacement des séparateur décimaux "." en ","
             informationVoulues['price_excluding_tax'].append(
-                        tdsTagProductInformation[2].text.replace('.', ',').replace('Â', '').replace('\u00A3', '\u00A3 '))
+                    tdsTagProductInformation[2].text.replace('.', ',').replace('Â', '').replace('\u00A3', '\u00A3 '))
             informationVoulues['price_including_tax'].append(
-                        tdsTagProductInformation[3].text.replace('.', ',').replace('Â', '').replace('\u00A3', '\u00A3 '))
+                    tdsTagProductInformation[3].text.replace('.', ',').replace('Â', '').replace('\u00A3', '\u00A3 '))
             # Extraction de la quantié disponible dans "In stock (xx available)"
             # Supposition que s'il n'y en a pas en stock alors le texte ne débutera pas par "I"
             # S'il débute par "I" alors on récupére la quantité en stock sinon on indique 0
@@ -133,62 +135,78 @@ def scrapInformationsVoulues(urlLivre):
         # Ajout de l'information issues d'une balise <img>
         # Il faut reconstruire l'url de l'image
             informationVoulues['image_url'].append(str('https://books.toscrape.com/' + str(img_urlImage[6:])))
-
     # time.sleep()
     ecritureCSV(informationVoulues)
-
-
 
 #  lectureCSV('leFichier')
 
 
-#### Fonction pour récupérer les urls de tous les livres d'une category ###
-def toutesURLCategory ():
-    urlCategoryyHome = 'http://books.toscrape.com/catalogue/category/books/contemporary_38/index.html'
+# Collecte de toutes les urls de tous les livres d'une categorie.
+def collect_url_books_by_one_category():
+    url_category_home = '' \
+                        'http://books.toscrape.com/catalogue/category/books/' \
+                        'christian_43/index.html'
 
-    responseHomeCategory = rq.get(urlCategoryyHome)
+    # Pour contrôle que l'url est valide. À terme déplacer CECI dans une
+    # fonction qui le vérifie avant la collecte des url.
+    request_home_category = rq.get(url_category_home)
+    if request_home_category.ok is False:
+        return print('L\'url n\'est pas valide.')
 
-    if responseHomeCategory.ok:
-        soupHomeCategory = BeautifulSoup(responseHomeCategory.text, 'html.parser')
-        liIndicationNombrePages = soupHomeCategory.findAll('li')[-2:]
-        quantiteLivreCategory = soupHomeCategory.findAll('form', {'class': 'form-horizontal'})[0].find('strong').text
+    # Utiliser requeste_home_category.text à la place de
+    # request_home_category.content.decode('utf-8) donnerais un résultat
+    # équivalent. Je laisse le .decode('utf-8) pour assurer d'un encodage
+    # en utf-8.
+    soup_home_category = BeautifulSoup(
+        request_home_category.content.decode('utf-8'), 'html.parser')
+    quantity_books_in_category = soup_home_category.findAll(
+        'form', {'class': 'form-horizontal'})[0].find('strong').text
 
-    # Récupération de toutes les pages d'une category
-    # Si la category a plus de 20 livres alors elle a plus que la page http://../index.html
-        if int(quantiteLivreCategory) > 20:
-            urlAutresPages = []
-            pageCouranteCategory = [liIndicationNombrePages[0].text][0][35]
-            pageTotalCategory = [liIndicationNombrePages[0].text][0][40]
-            for i in range(1, int(pageTotalCategory)):
-                if int(pageCouranteCategory) < int(pageTotalCategory):
-                    urlAutresPages.append(urlCategoryyHome[:-10] + 'page-' + str(i+1) + '.html')
-                    pageCouranteCategory = int(pageCouranteCategory) + 1
+    # Collecte les urls de toutes les pages d'une categorie et les stockent dans
+    # la liste url_all_pages_category.
+    url_all_pages_category = []
+    if int(quantity_books_in_category) > 20:
+        url_other_page_category = []
+        litag_numbers_of_pages = soup_home_category.findAll('li')[-2:]
+        current_page_of_category = [litag_numbers_of_pages[0].text][0][35]
 
-            urlPagesCategory = [urlCategoryyHome] + urlAutresPages
-    #Si la cetegory a moins de 20 livres alors la category n'a que la page http://../index.html
-        else:
-            urlPagesCategory = [urlCategoryyHome]
+        total_page_of_category = [litag_numbers_of_pages[0].text][0][40]
+        for number_page in range(1, int(total_page_of_category)):
+            if int(current_page_of_category) < int(total_page_of_category):
+                url_other_page_category.append(url_category_home[:-10] +
+                                               'page-' +
+                                               str(number_page+1) + '.html')
+                current_page_of_category = int(current_page_of_category) + 1
 
-    # Récupération des URL de tous les livres de toutes les pages de la  category
-        urlLivresDeLaCategroy = []
-        for url in urlPagesCategory:
-            responsePagesCategory = rq.get(url)
-            soupPagesCategory = BeautifulSoup(responsePagesCategory.text, 'html.parser')
-            h3sLivresAffichésParPage = soupPagesCategory.findAll('h3')
-            for h3Livre in h3sLivresAffichésParPage:
-                aLivre = h3Livre.find('a')
-                urlLivresDeLaCategroy.append('http://books.toscrape.com/catalogue/' + aLivre['href'][9:])
+        url_all_pages_category = [url_category_home] + url_other_page_category
+    else:
+        url_all_pages_category.append(url_category_home)
 
-    scrapInformationsVoulues(urlLivresDeLaCategroy)
+    # Collecte des url de tous les livres de toutes les pages de la categorie,
+    # et les stokent dans la liste url_books_of_category.
+    url_books_of_category = []
+    for url_pages in url_all_pages_category:
+        request_page_category = rq.get(url_pages)
+        soup_page_category = BeautifulSoup(
+            request_page_category.content.decode('utf-8'), 'html.parser')
+        h3tag_books_show_by_page = soup_page_category.findAll('h3')
+        for h3tag_book in h3tag_books_show_by_page:
+            atag_book = h3tag_book.find('a')
+            url_books_of_category.append(
+                'http://books.toscrape.com/catalogue/' +
+                atag_book['href'][9:])
+
+    scrap_data(url_books_of_category)
 
 
-
-toutesURLCategory()
+collect_url_books_by_one_category()
 
 """ IDÉE
 
-Si class identique pour plussieurs infosARechercher ET si id simmilaire ALORS ce servir du nom variable dans une
+Si class identique pour plussieurs infosARechercher ET si id simmilaire ALORS
+ce servir du nom variable dans une
 boucle pour recupérer toutes les infos avec la boucle.
 cou
-ntry = soup.find('tr', {'id': 'placse_' + str(nameRecherche) + '__row'}).find('td', {'class': 'laClasse})
+ntry = soup.find('tr', {'id': 'placse_' + str(nameRecherche) + '__row'}).
+find('td', {'class': 'laClasse})
 """
