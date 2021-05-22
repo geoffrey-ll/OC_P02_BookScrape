@@ -77,7 +77,7 @@ def scrapInformationVoulues():
     # Ajout de l'url de l'image de l'oeuvre
         informationVoulues['image_url'] = str('https://books.toscrape.com/' + str(image[6:]))
 
-        ecritureCSV(informationVoulues)
+        # ecritureCSV(informationVoulues)
 
 
 
@@ -121,7 +121,7 @@ def toutesURLCategory ():
                 aLivre = h3Livre.find('a')
                 urlLivresDeLaCategroy.append('http://books.toscrape.com/catalogue/' + aLivre['href'][9:])
 
-    # scrapInformationVoulues(urlLivresDeLaCategroy)
+    scrapInformationVoulues(urlLivresDeLaCategroy)
 
 toutesURLCategory()
 
