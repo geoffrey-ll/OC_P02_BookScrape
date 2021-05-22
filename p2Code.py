@@ -1,13 +1,15 @@
 import requests as rq
 from bs4 import BeautifulSoup
+# import time
 import csv
 
-urlLivre = 'http://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html'
-
-response = rq.get(urlLivre)
+# urlLivre = 'http://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html'
+#
+# response = rq.get(urlLivre)
 
 enTete = ['product_page_url', 'universal_product_code (upc)', 'title']
 
+### Fonction pour écrire dans un .csv les infortions récoltées ###
 def ecritureCSV(infosAEcrire):
     with open('leFichier.csv', 'w') as file:
         file.write('product_page_url|universal_product_code (upc)|title|price_including_tax|'
@@ -17,83 +19,97 @@ def ecritureCSV(infosAEcrire):
                file.write(information + '|')
         file.write('\n')
 
-
+### Fonction pour lire le .csv contenant les informations récoltées ###
 def lectureCSV(infosALire):
     with open(infosALire + '.csv', 'r') as file:
        for row in file:
            print('row', row)
 
 
-def scrapInformationVoulues():
-    if response.ok:
-        informationVoulues = {
-            'product_page_url': '',
-            'universal_product_code (upc)': '',
-            'title': '',
-            'price_including_tax': '',
-            'price_excluding_tax': '',
-            'number_available': '',
-            'product_description': '',
-            'category': '',
-            'review_rating': '',
-            'image_url': ''
-        }
+### Fonction pour récupérer toutes les informations voulues sur l'url d'un livre ###
+def scrapInformationVoulues(urlLivre):
+    informationVoulues = {
+        'product_page_url': [],
+        'universal_product_code (upc)': [],
+        'title': [],
+        'price_including_tax': [],
+        'price_excluding_tax': [],
+        'number_available': [],
+        'product_description': [],
+        'category': [],
+        'review_rating': [],
+        'image_url': []
+    }
 
-    #L'ensemble des soups
-        soup = BeautifulSoup(response.text, 'html.parser')
-        tds = soup.findAll('td')
-        titreOeuvre = soup.find('h1').text
-        paragraphes = soup.findAll('p')
-        categoryOeuvre = soup.findAll('a')[3].text
-        image = soup.findAll('img')[0].attrs.get('src')
-
-    # Ajout de l'url de la page
-        informationVoulues['product_page_url'] = urlLivre
-    # Ajout des informations issues de tds
-        informationVoulues['universal_product_code (upc)'] = tds[0].text
-        informationVoulues['price_excluding_tax'] = tds[2].text.replace('.', ',').replace('Â', '').replace('\u00A3',
-                                                                                                           '\u00A3 ')
-        informationVoulues['price_including_tax'] = tds[3].text.replace('.', ',').replace('Â', '').replace('\u00A3',
-                                                                                                           '\u00A3 ')
-        if tds[5]:
-            if str(tds[5].text[0]) == str('I'):
-                informationVoulues['number_available'] = tds[5].text[10:-11]
-            else:
-                informationVoulues['number_available'] = tds[5].txt[11:-11]
-    # Ajout des infos issues de titreOeuvre
-        informationVoulues['title'] = titreOeuvre
-    # Ajout des infos issues des paragraphes
-        informationVoulues['product_description'] = paragraphes[3].text
-        traduction = {'Zero': 'Zéro étoile',
-                      'One': 'Une étoile',
-                      'Two': 'Deux étoiles',
-                      'Three': 'Trois étoiles',
-                      'Four': 'Quatre étoiles',
-                      'Five': 'Cinq étoiles'
-                      }
-        informationVoulues['review_rating'] = str(traduction.get(str(paragraphes[2].attrs.get('class')[1])))
-    # Ajout de la categorie de l'oeuvre
-        informationVoulues['category'] = categoryOeuvre
-    # Ajout de l'url de l'image de l'oeuvre
-        informationVoulues['image_url'] = str('https://books.toscrape.com/' + str(image[6:]))
-
-        # ecritureCSV(informationVoulues)
+    for urlATraiter in urlLivre:
+        response_urlLivres = rq.get(urlATraiter)
 
 
+        if response_urlLivres.ok:
 
-# scrapInformationVoulues()
+        #L'ensemble des soups
+            soupLivreHome = BeautifulSoup(response_urlLivres.text, 'html.parser')
+            tdsProductInformation = soupLivreHome.findAll('td')
+            h1TitreOeuvre = soupLivreHome.find('h1').text
+            pDescriptionEtNote = soupLivreHome.findAll('p')
+            aCategoryOeuvre = soupLivreHome.findAll('a')[3].text
+            img_urlImage = soupLivreHome.findAll('img')[0].attrs.get('src')
+
+        # Ajout de l'url de la page
+            informationVoulues['product_page_url'].append(urlATraiter)
+        # Ajout des informations issues de balises <td>
+            informationVoulues['universal_product_code (upc)'].append(tdsProductInformation[0].text)
+            # Le caractère unicode "\u00A3" est celui de la livre Sterling on ajoute un espace après celui-ci
+            # Remplacement des séparateur décimaux "." en ","
+            informationVoulues['price_excluding_tax'].append(
+                        tdsProductInformation[2].text.replace('.', ',').replace('Â', '').replace('\u00A3', '\u00A3 '))
+            informationVoulues['price_including_tax'].append(
+                        tdsProductInformation[3].text.replace('.', ',').replace('Â', '').replace('\u00A3', '\u00A3 '))
+            # Extraction de la quantié disponible dans "In stock (xx available)"
+            # Supposition que s'il n'y en a pas en stock alors le texte ne débutera pas par "I"
+            # S'il débute par "I" alors on récupére la quantité en stock sinon on indique 0
+            if tdsProductInformation[5]:
+                if str(tdsProductInformation[5].text[0]) == str('I'):
+                    informationVoulues['number_available'].append(tdsProductInformation[5].text[10:-11])
+                else:
+                    informationVoulues['number_available'].append(0)
+        # Ajout de l'information issues de la balise <h1>
+            informationVoulues['title'].append(h1TitreOeuvre)
+        # Ajout des informationss issues de balises <p>
+            informationVoulues['product_description'].append(pDescriptionEtNote[3].text)
+            # Dictionnaire pour traduire en français le nombre d'étoiles qu'a un livre
+            # Information de forme "xx étoile(s)"
+            traduction = {'Zero': 'Zéro étoile',
+                          'One': 'Une étoile',
+                          'Two': 'Deux étoiles',
+                          'Three': 'Trois étoiles',
+                          'Four': 'Quatre étoiles',
+                          'Five': 'Cinq étoiles'}
+            informationVoulues['review_rating'].append(str(traduction.get(str(pDescriptionEtNote[2].attrs.get('class')[1]))))
+        # Ajout de l'information issue d'une balise <a>
+            informationVoulues['category'].append(aCategoryOeuvre)
+        # Ajout de l'information issues d'une balise <img>
+        # Il faut reconstruire l'url de l'image
+            informationVoulues['image_url'].append(str('https://books.toscrape.com/' + str(img_urlImage[6:])))
+
+    # time.sleep()
+    # ecritureCSV(informationVoulues)
+
+
+
 #  lectureCSV('leFichier')
 
 
+#### Fonction pour récupérer les urls de tous les livres d'une category ###
 def toutesURLCategory ():
     urlCategoryyHome = 'http://books.toscrape.com/catalogue/category/books/travel_2/index.html'
 
     responseHomeCategory = rq.get(urlCategoryyHome)
 
     if responseHomeCategory.ok:
-        soupHome = BeautifulSoup(responseHomeCategory.text, 'html.parser')
-        liIndicationNombrePages = soupHome.findAll('li')[-2:]
-        quantiteLivreCategory = soupHome.findAll('form', {'class': 'form-horizontal'})[0].find('strong').text
+        soupHomeCategory = BeautifulSoup(responseHomeCategory.text, 'html.parser')
+        liIndicationNombrePages = soupHomeCategory.findAll('li')[-2:]
+        quantiteLivreCategory = soupHomeCategory.findAll('form', {'class': 'form-horizontal'})[0].find('strong').text
 
     # Récupération de toutes les pages d'une category
     # Si la category a plus de 20 livres alors elle a plus que la page http://../index.html
@@ -115,13 +131,15 @@ def toutesURLCategory ():
         urlLivresDeLaCategroy = []
         for url in urlPagesCategory:
             responsePagesCategory = rq.get(url)
-            soupPages = BeautifulSoup(responsePagesCategory.text, 'html.parser')
-            h3sLivresAffichésPArPage = soupPages.findAll('h3')
+            soupPagesCategory = BeautifulSoup(responsePagesCategory.text, 'html.parser')
+            h3sLivresAffichésPArPage = soupPagesCategory.findAll('h3')
             for h3Livre in h3sLivresAffichésPArPage:
                 aLivre = h3Livre.find('a')
                 urlLivresDeLaCategroy.append('http://books.toscrape.com/catalogue/' + aLivre['href'][9:])
 
     scrapInformationVoulues(urlLivresDeLaCategroy)
+
+
 
 toutesURLCategory()
 
