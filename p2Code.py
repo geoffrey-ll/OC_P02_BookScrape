@@ -208,9 +208,15 @@ def collect_url_books_by_one_category():
 
     # Pour contrôle que l'url est valide. À terme déplacer CECI dans une
     # fonction qui le vérifie avant la collecte des url.
+    # Ne détecte des erreurs dans l'url que si l'erreu est après :
+    # "http://books.toscrape.com/".
+    # Si l'erreur est après, la requête renvoi le code html 404, si elle est
+    # dans le nom de domaine, la requête semble ne pas aboutir. (aucun serveur
+    # n'est atteint pour renvoiyer un code html 404…)
     request_home_category = rq.get(url_category_home)
     if request_home_category.ok is False:
-        return print('L\'url n\'est pas valide.')
+        return \
+            print('L\'url \n{}\nn\'est pas valide.'.format(url_category_home))
 
     # Utiliser requeste_home_category.text à la place de
     # request_home_category.content.decode('utf-8) donnerais un résultat
@@ -258,7 +264,39 @@ def collect_url_books_by_one_category():
     scrap_data(url_books_of_category)
 
 
-collect_url_books_by_one_category()
+# Collecte les url_home_categery_book de chaqu'une des catégries de livres du
+# site : http://books.toscrape.com/.
+def collect_url_home_category():
+    url_home_site = 'http://books.toscrape.com/'
+    request_url_home_site = rq.get(url_home_site)
+
+    # Controle de l'url à impélementer. Vérification que l'url ne pointe pas
+    # vers une page type "Hum, nou ne parvenons pas à trouver ce site".
+    # Une telle page ne semble pas retouner code html lors de la requeste.get().
+    # Dessous ce qui a été tenté, mais qui ne fut pas fructueux.
+    # if request_url_home_site.ok != True:
+    #     print('L\'url du site est invalide !\n', url_home_site)
+
+    soup_home_site = BeautifulSoup(request_url_home_site.content
+                                   .decode('utf-8'), 'html.parser')
+    atag_home_site = soup_home_site.findAll('a')
+    url_home_category_book = []
+    for href_in_home_site in atag_home_site:
+        if href_in_home_site.get('href')[:25] == 'catalogue/category/books/':
+            url_home_category_book.append(
+                url_home_site + href_in_home_site.get('href'))
+    # print(url_home_category_book)
+
+
+
+
+
+
+
+
+
+collect_url_home_category()
+# collect_url_books_by_one_category()
 
 """ IDÉE
 
