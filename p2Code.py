@@ -42,6 +42,7 @@ from bs4 import BeautifulSoup
 # Ou plutôt une foncion qui puisse toutes les appeler lorsqu'il le faut ???
 
 
+#docstring à créer pour cette fonction (selon pylint).
 # Écriture dans un .csv des informations récoltées de chaque url visités.
 def write_data_desired_in_csv(data_desired):
     name_file_data_books = 'data_books_in_'\
@@ -74,6 +75,7 @@ def write_data_desired_in_csv(data_desired):
                 file_data_books.write('\n')
 
 
+# docstring à créer pour cette fonction (selon pylint).
 # Fonction pour lire le .csv contenant les informations récoltées.
 def read_csv_content_data_desired(nam_file_data_books):
     with open(nam_file_data_books, 'r') as file_data_books:
@@ -81,6 +83,7 @@ def read_csv_content_data_desired(nam_file_data_books):
             print('row', row)
 
 
+# docstring à créer pour cette fonction (selon pylint).
 # Collecte de toutes les informations pour chaque url contenues dans la liste
 # url_books
 def scrap_data(url_books):
@@ -165,6 +168,7 @@ def scrap_data(url_books):
 #  lectureCSV('leFichier')
 
 
+# docstring à créer pour cette fonction (selon pylint)
 # Vérfie que les requêtes sur les url_books renvoi un code 200, puis appel la
 # fonction scrap_data(). Le cas échéant renvoi un message indiquant les
 # url_books invalides.
@@ -263,5 +267,4 @@ ce servir du nom variable dans une
 boucle pour recupérer toutes les infos avec la boucle.
 cou
 ntry = soup.find('tr', {'id': 'placse_' + str(nameRecherche) + '__row'}).
-find('td', {'class': 'laClasse})
-"""
+find('td', {'class': 'laClasse})"""
