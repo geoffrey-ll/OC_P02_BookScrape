@@ -1,3 +1,6 @@
+.gitignore/
 env/
 venv/
 .idea/
+test.py
+*.csv
