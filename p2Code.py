@@ -1,5 +1,7 @@
 import requests as rq
 from bs4 import BeautifulSoup
+import sys
+import argparse as arg_p #bibliothèque standard ?
 # import time
 
 
@@ -57,6 +59,9 @@ def write_data_desired_in_csv(data_desired):
     # "[_]passion in[_]". L'espace insécable est afficher par "\xà0", ce qui
     # n'est pas du utf-8.
     # Préciser encodaging='utf-8' paramètre du .csv m'a levée cette erreur.
+
+    #### Mettre sur la 1ère ligne, au-dessus des en-têtes de colonnes, (dans la 1ère case), la date et l'heure de la création du fichier ????
+    #### Ou date et heure création du fichier dans le nom du fichier ??? (me plaît moins)
     with open(name_file_data_books, 'w', encoding='utf-8') as file_data_books:
         # Le noms des clés de data_desired servent comme nom de colonnes.
         for key_data_desired in data_desired.keys():
@@ -202,10 +207,10 @@ def controle_url_books(url_books):
 
 # Collecte de toutes les urls de tous les livres d'une categorie.
 def collect_url_books_by_one_category():
-    url_category_home = '' \
-                        'http://books.toscrape.com/catalogue/category/books/' \
-                        'contemporary_38/index.html'
-
+    url_category_home = \
+        'http://books.toscrape.com/' \
+        'catalogue/category/books/' \
+        'suspense_44/index.html'
     # Pour contrôle que l'url est valide. À terme déplacer CECI dans une
     # fonction qui le vérifie avant la collecte des url.
     # Ne détecte des erreurs dans l'url que si l'erreu est après :
@@ -234,7 +239,6 @@ def collect_url_books_by_one_category():
         url_other_page_category = []
         litag_numbers_of_pages = soup_home_category.findAll('li')[-2:]
         current_page_of_category = [litag_numbers_of_pages[0].text][0][35]
-
         total_page_of_category = [litag_numbers_of_pages[0].text][0][40]
         for number_page in range(1, int(total_page_of_category)):
             if int(current_page_of_category) < int(total_page_of_category):
@@ -261,12 +265,15 @@ def collect_url_books_by_one_category():
                 'http://books.toscrape.com/catalogue/' +
                 atag_book['href'][9:])
 
-    scrap_data(url_books_of_category)
+        print(url_books_of_category)
+
+    # controle_url_books(url_books_of_category)
 
 
 # Collecte les url_home_categery_book de chaqu'une des catégries de livres du
 # site : http://books.toscrape.com/.
 def collect_url_home_category():
+    # url_home_site est la page d'accueil du site scrapper.
     url_home_site = 'http://books.toscrape.com/'
     request_url_home_site = rq.get(url_home_site)
 
@@ -277,6 +284,9 @@ def collect_url_home_category():
     # if request_url_home_site.ok != True:
     #     print('L\'url du site est invalide !\n', url_home_site)
 
+    # Seules les page d'accueil des catégories de livres contiennent
+    # '/category/books/'. Je m'en sert donc pour détecter le noms des catégories
+    # puis reconsruction des urls.
     soup_home_site = BeautifulSoup(request_url_home_site.content
                                    .decode('utf-8'), 'html.parser')
     atag_home_site = soup_home_site.findAll('a')
@@ -285,7 +295,96 @@ def collect_url_home_category():
         if href_in_home_site.get('href')[:25] == 'catalogue/category/books/':
             url_home_category_book.append(
                 url_home_site + href_in_home_site.get('href'))
+
+    selection_category_to_scrap(url_home_category_book)
     # print(url_home_category_book)
+
+
+def selection_category_to_scrap(all_url_home_page_category_book):
+    input_possible = ['help', 'all', 'list']
+    category_possible = []
+    category_select_by_user = []
+    for category_book in all_url_home_page_category_book:
+        input_possible.append(category_book[51].upper() + category_book[52:-13].replace('_', '').replace('-', ' '))
+        category_possible.append(category_book[51].upper() + category_book[52:-13].replace('_', '').replace('-', ' '))
+
+
+    def demand_of_user_what_category_to_scrap():
+        all_input_user = [input('{0:<s}\n'
+                                '{1:^49s}\n'.format('\nQuelles sont les catégories de livres à scraper ?',
+                                                    'Utilisez : \'-noms categories\' ou \'all\' ou \'list\''))]
+        analyse_and_collect_input_user(all_input_user)
+
+
+    def analyse_category_select_by_user(all_input_user):
+        all_category_want_by_user = []
+        for index_all_input_user, character_all_input_user in enumerate(all_input_user[0]):
+            if character_all_input_user == '-':
+                index_start_input_current = index_all_input_user + 1
+                index_end_input_current = index_start_input_current
+                while all_input_user[0][index_end_input_current] != '-':
+                    if index_end_input_current < len(all_input_user[0]) - 1:
+                        index_end_input_current += 1
+                    elif index_end_input_current == len(all_input_user[0]) - 1:
+                        break
+                input_current = all_input_user[0][index_start_input_current:index_end_input_current + 1]
+                if input_current[-1] == '-':
+                    all_category_want_by_user.append(input_current[:-2])
+                else:
+                    all_category_want_by_user.append(input_current)
+            else:
+                continue
+        # control_this_name_ask_is_name_category(all_category_want_by_user)
+
+
+    # def control_this_name_ask_is_name_category(all_category_want_by_user):
+    #     category_use_to_scraping = []
+    #     for category_want_to_scrap in all_category_want_by_user:
+    #         for name_category_possible in category_possible:
+    #             if category_want_to_scrap == name_category_possible:
+
+
+
+    def analyse_and_collect_input_user(all_input_user):
+        for input_user in all_input_user:
+            if input_user == ('list'):
+                category_possible_sorted = sorted(input_possible[3:])
+                print('\n{1:#^100}\n{2:<1s}{0:^98s}{2:>1s}\n{1:#^100}\n'.format('Catégories disponibles pour le scrapping.', '', '#'))
+                for start_index_category_show_by_row in range(0, len(category_possible_sorted), 5):
+                    end_index_show_by_row = start_index_category_show_by_row + 4
+                    print('{0:<20s}{1:<20s}{2:<20s}{3:<20s}{4:<20s}'.format(category_possible_sorted[start_index_category_show_by_row],
+                                                                            category_possible_sorted[start_index_category_show_by_row + 1],
+                                                                            category_possible_sorted[start_index_category_show_by_row + 2],
+                                                                            category_possible_sorted[start_index_category_show_by_row + 3],
+                                                                            category_possible_sorted[end_index_show_by_row]))
+                print('all : pour toutes les catégories.\n'
+                      '-nom catégorie : pour chaque catégorie souhaitées')
+                all_input_user = []
+
+                all_input_user.append(input())
+                analyse_and_collect_input_user(all_input_user)
+                if all_input_user[0] == 'Easter Egg':
+                    print('Hahaha, this is the best Easter Egg ;)')
+                    sys.exit()
+                else:
+                    sys.exit()
+            elif input_user == 'all':
+                print('Vous avez choisit toutes les catégories :\n')
+                confirmation_select_category = input('Pour confirmer entrez \'y\'\n'
+                                                     'Pour refaire la sélection entrez \'n\''
+                                                     '\n')
+                if confirmation_select_category == 'y':
+                    category_select_by_user.append(category_possible)
+                    # collect_url_books_by_one_category()
+                elif confirmation_select_category == 'n':
+                    demand_of_user_what_category_to_scrap()
+            else:
+                continue
+        analyse_category_select_by_user(all_input_user)
+
+
+    demand_of_user_what_category_to_scrap()
+
 
 
 
