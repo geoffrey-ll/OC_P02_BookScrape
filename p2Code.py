@@ -310,6 +310,7 @@ def collect_url_home_category():
 # la fonction collect_url_home_category(). Puis laisse l'utilisateur définir les
 # catégories qui sont à scrapper.
 def selection_category_for_scrap(all_url_home_page_category_book):
+    
     category_possible = []
 
     # Collecte les différents noms des catégories du site marchand et les ajoute
