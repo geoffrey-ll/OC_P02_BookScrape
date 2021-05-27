@@ -347,7 +347,7 @@ def selection_category_to_scrap(all_url_home_page_category_book):
 
     def analyse_and_collect_input_user(all_input_user):
         for input_user in all_input_user:
-            if input_user == ('list'):
+            if input_user == ('list'):git
                 category_possible_sorted = sorted(input_possible[3:])
                 print('\n{1:#^100}\n{2:<1s}{0:^98s}{2:>1s}\n{1:#^100}\n'.format('Catégories disponibles pour le scrapping.', '', '#'))
                 for start_index_category_show_by_row in range(0, len(category_possible_sorted), 5):
