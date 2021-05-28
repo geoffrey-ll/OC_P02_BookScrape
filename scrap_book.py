@@ -8,6 +8,7 @@ def scrap_book(book_url):
 
 
 
-book_url = "http://books.toscrape.com/catalogue/the-last-mile-amos-decker-2_754/index.html"
+book_url = "http://books.toscrape.com/catalogue/its-only-the-himalayas_981/" \
+           "index.html"
 
 scrap_book(book_url)

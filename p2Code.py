@@ -1,6 +1,7 @@
 import requests as rq
 from bs4 import BeautifulSoup
 import sys
+from pprint import pprint as pp
 import argparse as arg_p #bibliothèque standard ?
 # import time
 
@@ -213,7 +214,8 @@ def collect_url_books_by_one_category():
     url_category_home = \
         'http://books.toscrape.com/' \
         'catalogue/category/books/' \
-        'suspense_44/index.html'
+        'mystery_3/index.html'
+
     # Pour contrôle que l'url est valide. À terme déplacer CECI dans une
     # fonction qui le vérifie avant la collecte des url.
     # Ne détecte des erreurs dans l'url que si l'erreu est après :
@@ -267,8 +269,6 @@ def collect_url_books_by_one_category():
             url_books_of_category.append(
                 'http://books.toscrape.com/catalogue/' +
                 atag_book['href'][9:])
-
-        print(url_books_of_category)
 
     # controle_url_books(url_books_of_category)
 
@@ -564,8 +564,8 @@ def vers_la_suite_du_script(category_validate_to_scrap):
 
 
 
-collect_url_home_category()
-# collect_url_books_by_one_category()
+# collect_url_home_category()
+collect_url_books_by_one_category()
 
 """ IDÉE
 
@@ -574,4 +574,5 @@ ce servir du nom variable dans une
 boucle pour recupérer toutes les infos avec la boucle.
 cou
 ntry = soup.find('tr', {'id': 'placse_' + str(nameRecherche) + '__row'}).
-find('td', {'class': 'laClasse})"""
+find('td', {'class': 'laClasse})
+"""
