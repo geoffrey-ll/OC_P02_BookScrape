@@ -59,8 +59,12 @@ def scrap_data_func(url_books):
                     .replace('\u00A3', '\u00A3 '))
         # Collecte de la quantité d'unité en stock  dans :
         # "In stock (xx available)" à l'aide d'une expression régulière.
-        data_desired['number_available'] = re\
-            .findall("[0-9]+", tdstag_content_product_information[5].text)
+        # Rq : l'expression régulière est une liste l'un seule élèment.
+        # Du coup on prend l'index [0] de l'expression régulière,
+        # .re.findall()[0] pour éviter que la quantité n'apparaisse sous forme
+        # de liste dans le .csv.
+        data_desired['number_available'].append(re\
+            .findall(str("[0-9]+"), tdstag_content_product_information[5].text)[0])
         # Collecte du titre présent dans la balise h1
         data_desired['title'].append(h1_title_book)
         # Les caractères particuliers (tel "…" "'"), s'affiche correctement

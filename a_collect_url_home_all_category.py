@@ -20,6 +20,8 @@ def collect_url_home_all_category_func():
     # puis reconsruction des urls.
     soup_home_site = BeautifulSoup(request_url_home_site.content
                                    .decode('utf-8'), 'html.parser')
+
+                                   
     atag_home_site = soup_home_site.findAll('a')
     url_home_all_category_book = []
     for href_in_home_site in atag_home_site:

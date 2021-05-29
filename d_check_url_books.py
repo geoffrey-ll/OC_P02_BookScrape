@@ -1,12 +1,12 @@
 import requests as rq
-from scrap_data import scrap_data_func
+from e_scrap_data import scrap_data_func
 
 
 # docstring à créer pour cette fonction (selon pylint)
 # Vérfie que les requêtes sur les url_books renvoi un code 200, puis appel la
 # fonction scrap_data(). Le cas échéant renvoi un message indiquant les
 # url_books invalides.
-def controle_url_books(url_books):
+def check_url_books_func(url_books):
     # Less 4 lignes en commentaires suivantse sont là pour introduires des
     # erreurs dans des url_books et vérifier l'efficacité de la fonccion.
     # url_books.insert(0, url_books[0] + 'l')
