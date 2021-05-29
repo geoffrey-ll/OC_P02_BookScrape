@@ -7,7 +7,7 @@ import csv
 #docstring à créer pour cette fonction (selon pylint).
 # Écriture dans un .csv des informations récoltées de chaque url visités.
 def write_data_desired_in_csv_func(data_desired):
-    # Dans data_desired les noms de catégories sont en .capitalize et avec
+    # Dans data_desired les noms de catégories sont en .capitalize et avec un
     # espace entre les mots. name_category change cela.
     name_category = data_desired.get('category')[0].lower().replace(' ', '_')
 

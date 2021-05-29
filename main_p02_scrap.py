@@ -5,6 +5,7 @@ from c_scrap_books_urls_in_category import scrap_books_urls_in_category_func
 from d_check_url_books import check_url_books_func
 from e_scrap_data import scrap_data_func
 from f_write_csv import write_data_desired_in_csv_func
+from g_cover_download import cover_ddl_func
 
 # Il y a 1260 url de livres collectées, lorsqu'on récupére les url de livres via
 # toutes les catégories d'un coup. Sur la home page du site, il est indiqué
@@ -18,6 +19,9 @@ def programme():
         url_books_ok = check_url_books_func(url_books_to_scrap)
         data = scrap_data_func(url_books_ok)
         write_data_desired_in_csv_func(data)
+        # print('cover : ', data['image_url'], '\nhome_page : ', data['product_page_url'],
+        #       '\ntitle', data['title'])
+        cover_ddl_func(data)
 
 
 programme()

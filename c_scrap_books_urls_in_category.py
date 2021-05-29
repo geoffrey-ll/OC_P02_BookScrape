@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from pprint import pprint as pp
 from e_scrap_data import scrap_data_func
 # from write_csv import write_data_desired_in_csv_func
-from image_download import telecharger_images
+from g_cover_download import cover_ddl_func
 
 
 def scrap_books_urls_in_category_func(url_category):
@@ -81,6 +81,6 @@ def scrap_category(url_category):
     all_urls = scrap_books_urls_in_category(url_category)
     result = scrap_data_func(all_urls)
     write_csv_func(result)
-    telecharger_images(result)
+    # cover_ddl_func(result)
 
 # scrap_books_urls_in_category('http://books.toscrape.com/catalogue/category/books/sequential-art_5/index.html')
