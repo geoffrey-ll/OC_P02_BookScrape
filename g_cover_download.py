@@ -30,13 +30,52 @@ def cover_ddl_func(all_data):
     for idx in range(len(all_data['image_url'])):
         # text = all_data['title'][idx].lower().replace('"', '\'').replace(' ', '_')
         title_adjust = re.sub('[\\\\/<>|]', '', all_data['title'][idx].lower()
+                              .replace('?', '¿')
                               .replace('*', '^')
-                              .replace(':', '_-_')
+                              .replace(':', '_-')
                               .replace('"', '\'')
                               .replace(' ','_'))
         name_cover = folder_cover + '/' + title_adjust + '.jpg'
+
         if os.path.exists(name_cover) == False:
-            wget.download(all_data['image_url'][idx], out=name_cover)
+            # La longueur de chemin complet du fichier de la cover et nécessaire
+            # pour gérer l'exception des noms trop long.
+            path = os.getcwd() + '/' + name_cover
+
+            # Gére l'exception des noms trop long. La limite d'un nom, chemin
+            # inclus, pour win 7 et 10 (par défault), est de 260 caractères.
+            #
+            # Dans ce total de caractères, il faut en préserver 15 pour le
+            # module gwet. En effet, en fin de process, gwet recherche le chemin
+            # '.\\le_chemin_indiqué_en_out_(extension_inclus)str_gwet.tmp' où
+            # 'str_gwet' est un string de type : '[0-9][a-z]*8'
+            # (ex : 'xza0gat5.tmp'). Soit '.\\' en début de chemin +
+            # 'xza0gat5.tmp' en fin de chemin, ce qui porte bien à 15 le nombre
+            # de caractère dans l'expression du fichier, à réservé au module
+            # gwet.
+            # Example de nom trop long : 'At the Existantialist […] and others'
+            # de la catégorie 'Philosophy'.
+            #
+            # Une fois la cover download, son chemin à pour longueur 244
+            # caractères, soit 14 caractères libres. En effet, l'un des
+            # caractère vital pour le module gwet, (l'un des '\' en début de
+            # chemin) est aussi rajouté par windows, car out=short_name exclu
+            # le caractère '\' entre le répertoire courrant '.' et le
+            # short_name, dans notre cas, la '\' avant le dossier 'output'.
+            # De fait, à la fin du process, seul 14 emplacements de caractères
+            # sont libres et non 15.
+            if len(path) >= 245:
+                vital_module_gwet = 15
+                # gap_over_limit est le nombre de caractères en trop dans le
+                # titre du livre. Dans notre cas, la variable title_adjust.
+                gap_over_limit = len(path) - 260 + len('[_].jpg') + vital_module_gwet
+                short_name = name_cover[:-gap_over_limit] + '[…].jpg'
+                # On vérifie qu'il n'existe pas déjà une cover du même nom, pour
+                # éviter les download inutile et réduire la durée du script.
+                if os.path.exists(short_name) == False:
+                    wget.download(all_data['image_url'][idx], out=short_name)
+            else:
+                wget.download(all_data['image_url'][idx], out=name_cover)
 
 # telecharger_images()
 

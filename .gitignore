@@ -2,6 +2,7 @@ env/
 venv/
 .idea/
 test.py
+sandbox.py
 *.csv
 output/
 
