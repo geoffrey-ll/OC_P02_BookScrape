@@ -18,22 +18,25 @@ def description():
 
 
 def main(user_args):
-    if len(user_args) == 1:
-        return description()
+    try:
+        if user_args[1] == 'book':
+            data_desired = scrap_data_func([user_args[2]])
+            pp(data_desired)
 
-    elif user_args[1] == 'book':
-        data_desired = scrap_data_func([user_args[2]])
-        pp(data_desired)
+        elif user_args[1] == 'category':
+            url_books_of_category = scrap_books_urls_in_category_func(user_args[2])
+            pp(url_books_of_category)
 
-    elif user_args[1] == 'category':
-        url_books_of_category = scrap_books_urls_in_category_func(user_args[2])
-        pp(url_books_of_category)
+        elif user_args[1] == 'all':
+            main_without_selection()
 
-    elif user_args[1] == 'all':
-        main_without_selection()
-
-    elif user_args[1] == 'input':
-        main_with_selection()
+        elif user_args[1] == 'input':
+            main_with_selection()
+        else:
+            description()
+    except Exception as e:
+        print(str(e))
+        description()
 
 
 main(user_args)

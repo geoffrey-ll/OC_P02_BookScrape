@@ -1,6 +1,7 @@
 import os
 import wget
 import re
+from slugify import slugify
 
 
 def cover_ddl_func(all_data):
@@ -35,6 +36,7 @@ def cover_ddl_func(all_data):
                               .replace(':', '_-')
                               .replace('"', '\'')
                               .replace(' ','_'))
+       #  title_adjust = upc + '-' + slugify
         name_cover = folder_cover + '/' + title_adjust + '.jpg'
 
         if os.path.exists(name_cover) == False:
