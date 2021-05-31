@@ -1,10 +1,8 @@
 import requests as rq
 import re
 from bs4 import BeautifulSoup
-from pprint import pprint as pp
-from e_scrap_data import scrap_data_func
+from scrap_package.e_scrap_data import scrap_data_func
 # from write_csv import write_data_desired_in_csv_func
-from g_cover_download import cover_ddl_func
 
 
 def scrap_books_urls_in_category_func(url_category):
@@ -27,16 +25,16 @@ def scrap_books_urls_in_category_func(url_category):
     # Si l'erreur est après, la requête renvoi le code html 404, si elle est
     # dans le nom de domaine, la requête semble ne pas aboutir. (aucun serveur
     # n'est atteint pour renvoiyer un code html 404…)
-    request_home_category = rq.get(url_category_home)
-    if request_home_category.ok is False:
+    response_home_category = rq.get(url_category_home)
+    if response_home_category.ok is False:
         return \
             print('L\'url \n{}\nn\'est pas valide.'.format(url_category_home))
 
     # Utiliser requeste_home_category.text à la place de
-    # request_home_category.content.decode('utf-8) donnerais un résultat
+    # response_home_category.content.decode('utf-8) donnerais un résultat
     # équivalent. Je laisse le .decode('utf-8) pour assurer d'un encodage
     # en utf-8.
-    soup_home_category = BeautifulSoup(request_home_category.content.decode('utf-8'), 'html.parser')
+    soup_home_category = BeautifulSoup(response_home_category.content.decode('utf-8'), 'html.parser')
     quantity_books_in_category = soup_home_category.findAll(
         'form', {'class': 'form-horizontal'})[0].find('strong').text
 

@@ -1,18 +1,25 @@
 import re
 import os
 
-text = "bonjour j'ai 2 velos et 1 voiture et 135 euros"
-chemin = 'C:\open_class_rooms\p02\output\philosophy\cover_philosophy/at_the_existentialist_café_-__freedom,_being,_and_apricot_cocktails_with_-__jean-paul_sartre,_simone_de_beauvoir,_albert_camus,_martin_heidegger,_edmund_husserl,_karl_jaspers,_mauric'
+text = 'Mon texte de test. Un peu plus de texte'
+text2 = 'Ce texte ne commence pas par \'M\''
+texts = [text, text2]
 
-chemin_max = 'C:\open_class_rooms\p02\output\philosophy\cover_philosophy/at_the_existentialist_café_-__freedom,_being,_and_apricot_cocktails_with_-__jean-paul_sartre,_simone_de_beauvoir,_albert_camus,_martin_heidegger,_edmund_husserl,_karl_jaspers,_mauric (1)vvvvvvvvvv'
-result = re.sub("[0-9]+", 'nope', text)
+print(texts)
 
-chemin_other = 'C:\open_class_rooms\p02\output\philosophy/at_the_existentialist_café_-__freedom,_being,_and_apricot_cocktails_with_-__jean-paul_sartre,_simone_de_beauvoir,_albert_camus,_martin_heidegger,_edmund_husserl,_karl_jaspers,_mauric (1)vvvvvvvvvvlllllllllllllllll'
+for texte in texts:
 
-print('len chemin', len(chemin), '\nlen chemin_max', len(chemin_max), '\nlen chemin_other', len(chemin_other))
+    method_test = str(texte).startswith('Mon')
+    print(method_test)
+    if method_test is True:
+        print('Ce texte \'' +  texte + '\' commence bien par \'Mon')
+    if method_test is False:
+        print('Ce texte \'' + texte + '\' ne commence pas par \'Mon')
 
-print(len('output\philosophy\cover_philosophy'))
 
-
-
-
+blabla = 'Beaucoup de blabla pour ne rien blablater'
+print(blabla)
+blabla = ''
+print(blabla)
+blabla = 'Qu\'est-il devenu ?'
+print(blabla)

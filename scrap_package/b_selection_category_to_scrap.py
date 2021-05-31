@@ -1,8 +1,5 @@
 import sys
 import re
-from pprint import pprint as pp
-from bs4 import BeautifulSoup
-import a_collect_url_home_all_category
 
 
 #### Si dans l'input manul, le premier caractère n'est pas '-', alors rien ne se passe.
@@ -27,7 +24,7 @@ def selection_category_for_scrap_func(all_url_home_page_category_book):
     # '-quit' plutôt qui '-q' ou 'q' pour éviter les sorties du script
     # accidentelles.
     def demand_of_user_what_category_to_scrap():
-        all_input_user = [input(('{0}' * 56
+        all_input_user = input(('\n' + '{0}' * 56
                                  + '\n#{1:^54}#\n'
                                  + '{0}' * 56 + '\n\n' +
                                  '{2:<16} : {3}\n' +
@@ -43,132 +40,126 @@ def selection_category_for_scrap_func(all_url_home_page_category_book):
                                         '-all', 'TOUTES les catégories',
                                         '-list', 'catégories disponible au '
                                                  'scrap',
-                                        '-quit', 'interrompt le script'))]
+                                        '-quit', 'interrompt le script'))
         analyze_and_collect_input_user(all_input_user)
 
     # Exécute les options par défaut is présent dans l'input (-list or -quit or
     # -all). Sinon envoi l'input dans la fonction suivant qui déterminera les
     # catégories renseignées.
     def analyze_and_collect_input_user(all_input_user):
-        for input_user in all_input_user:
-            if input_user == '-list':
-                category_possible_sorted = sorted(category_possible)
-                # Titre de la liste de catégories.
-                print('\n{0:#^100}\n#{1:^98}#\n{0:#^100}\n'
-                      .format('',
-                              'Catégories disponibles pour le scrapping.'))
-                # Affichage des catégories de livres disponibles, rangées par
-                # ordre alphabétique et disposées en 5 colonnes (20 caractères
-                # par nom de catégories, alignement gauche) sur le nombres de
-                # lignes nécessaires.
-                number_row_less_one = len(category_possible_sorted) // 5
-                number_category_in_last_row = len(category_possible_sorted) % 5
-                for start_index_category_by_int_row in \
-                        range(0, number_row_less_one * 5, 5):
-                    end_index_show_by_int_row = start_index_category_by_int_row \
-                                                + 4
-                    print('{0:<20}{1:<20}{2:<20}{3:<20}{4:<20}'
-                          .format(category_possible_sorted
-                                  [start_index_category_by_int_row],
-                                  category_possible_sorted
-                                  [start_index_category_by_int_row + 1],
-                                  category_possible_sorted
-                                  [start_index_category_by_int_row + 2],
-                                  category_possible_sorted
-                                  [start_index_category_by_int_row + 3],
-                                  category_possible_sorted
-                                  [end_index_show_by_int_row]))
-                if number_category_in_last_row == 1:
-                    print('{:<20}'
-                          .format(category_possible_sorted
-                                  [number_row_less_one * 5]))
-                elif number_category_in_last_row == 2:
-                    print('{0:<20}{1:<20}'
-                          .format(category_possible_sorted
-                                  [number_row_less_one * 5],
-                                  category_possible_sorted
-                                  [number_row_less_one * 5 + 1]))
-                elif number_category_in_last_row == 3:
-                    print('{0:<20}{1:<20}{2:<20}'
-                          .format(category_possible_sorted
-                                  [number_row_less_one * 5],
-                                  category_possible_sorted
-                                  [number_row_less_one * 5 + 1],
-                                  category_possible_sorted
-                                  [number_row_less_one * 5 + 2]))
-                elif number_category_in_last_row == 4:
-                    print('{0:<20}{1:<20}{2:<20}{3:<20}'
-                          .format(category_possible_sorted
-                                  [number_row_less_one * 5],
-                                  category_possible_sorted
-                                  [number_row_less_one * 5 + 1],
-                                  category_possible_sorted
-                                  [number_row_less_one * 5 + 2],
-                                  category_possible_sorted
-                                  [number_row_less_one * 5 + 3], ))
-                all_input_user.clear()
-                all_input_user \
-                    .append(input(('\n' +
-                                   '{0:<16} : {1}\n' +
-                                   '{2:<16} : {3}\n' +
-                                   '{4:<16} : {5}\n')
-                                  .format('-noms catégories', 'toutes les '
-                                                              'entrées sur la '
-                                                              'même ligne',
-                                          '-all', 'TOUTES les catégories',
-                                          '-quit', 'interrompt le scrit')))
-                analyze_and_collect_input_user(all_input_user)
-            elif input_user == '-all':
-                # Utilisation d'un compteur pour quitter aisément la boucle.
-                counter_of_confirm = 0
-                while counter_of_confirm == 0:
-                    print('\nVous avez choisit TOUTES les catégories :')
-                    confirmation_select_category = \
-                        input(('{0:<5} : {1}\n' +
-                               '{2:<5} : {3}\n')
-                              .format('y/n', 'confirmer/refaire la sélection',
-                                      '-quit', 'interrompt le script'))
-                    if confirmation_select_category == 'y':
-                        for index_cat, cat in enumerate(category_possible):
-                            category_validate_to_scrap \
-                                .append(category_possible[index_cat])
-                            counter_of_confirm += 1
-                    elif confirmation_select_category == 'n':
+        if all_input_user == '-list':
+            category_possible_sorted = sorted(category_possible)
+            # Titre de la liste de catégories.
+            print('\n{0:#^100}\n#{1:^98}#\n{0:#^100}\n'
+                  .format('',
+                          'Catégories disponibles pour le scrapping.'))
+            # Affichage des catégories de livres disponibles, rangées par
+            # ordre alphabétique et disposées en 5 colonnes (20 caractères
+            # par nom de catégories, alignement gauche) sur le nombres de
+            # lignes nécessaires.
+            number_row_less_one = len(category_possible_sorted) // 5
+            number_category_in_last_row = len(category_possible_sorted) % 5
+            for start_index_category_by_int_row in \
+                    range(0, number_row_less_one * 5, 5):
+                end_index_show_by_int_row = start_index_category_by_int_row \
+                                            + 4
+                print('{0:<20}{1:<20}{2:<20}{3:<20}{4:<20}'
+                      .format(category_possible_sorted
+                              [start_index_category_by_int_row],
+                              category_possible_sorted
+                              [start_index_category_by_int_row + 1],
+                              category_possible_sorted
+                              [start_index_category_by_int_row + 2],
+                              category_possible_sorted
+                              [start_index_category_by_int_row + 3],
+                              category_possible_sorted
+                              [end_index_show_by_int_row]))
+            if number_category_in_last_row == 1:
+                print('{:<20}'
+                      .format(category_possible_sorted
+                              [number_row_less_one * 5]))
+            elif number_category_in_last_row == 2:
+                print('{0:<20}{1:<20}'
+                      .format(category_possible_sorted
+                              [number_row_less_one * 5],
+                              category_possible_sorted
+                              [number_row_less_one * 5 + 1]))
+            elif number_category_in_last_row == 3:
+                print('{0:<20}{1:<20}{2:<20}'
+                      .format(category_possible_sorted
+                              [number_row_less_one * 5],
+                              category_possible_sorted
+                              [number_row_less_one * 5 + 1],
+                              category_possible_sorted
+                              [number_row_less_one * 5 + 2]))
+            elif number_category_in_last_row == 4:
+                print('{0:<20}{1:<20}{2:<20}{3:<20}'
+                      .format(category_possible_sorted
+                              [number_row_less_one * 5],
+                              category_possible_sorted
+                              [number_row_less_one * 5 + 1],
+                              category_possible_sorted
+                              [number_row_less_one * 5 + 2],
+                              category_possible_sorted
+                              [number_row_less_one * 5 + 3], ))
+            all_input_user = input(('\n' +
+                                    '{0:<16} : {1}\n' +
+                                    '{2:<16} : {3}\n' +
+                                    '{4:<16} : {5}\n')
+                                   .format('-noms catégories', 'toutes les entrées sur la même ligne',
+                                           '-all', 'TOUTES les catégories',
+                                           '-quit', 'interrompt le scrit'))
+            analyze_and_collect_input_user(all_input_user)
+        elif all_input_user == '-all':
+            # Utilisation d'un compteur pour quitter aisément la boucle.
+            counter_of_confirm = 0
+            while counter_of_confirm == 0:
+                print('\nVous avez choisit TOUTES les catégories :')
+                confirmation_select_category = \
+                    input(('{0:<5} : {1}\n' +
+                           '{2:<5} : {3}\n')
+                          .format('y/n', 'confirmer/refaire la sélection',
+                                  '-quit', 'interrompt le script'))
+                if confirmation_select_category == 'y':
+                    for index_cat, cat in enumerate(category_possible):
+                        category_validate_to_scrap \
+                            .append(category_possible[index_cat])
                         counter_of_confirm += 1
-                        demand_of_user_what_category_to_scrap()
-                    elif confirmation_select_category == '-quit':
-                        sys.exit()
-                    elif confirmation_select_category != 'y' \
-                            and confirmation_select_category != 'n':
-                        print('\nRéponse invalide')
-            elif input_user == '-quit':
-                sys.exit()
-            elif input_user is not '-list' or input_user is not '-all':
-                analyze_category_select_by_user(all_input_user)
+                elif confirmation_select_category == 'n':
+                    counter_of_confirm += 1
+                    demand_of_user_what_category_to_scrap()
+                elif confirmation_select_category == '-quit':
+                    sys.exit()
+                elif confirmation_select_category != 'y' \
+                        and confirmation_select_category != 'n':
+                    print('\nRéponse invalide')
+        elif all_input_user == '-quit':
+            sys.exit()
+        elif all_input_user != '-list' and all_input_user != '-all':
+            analyze_category_select_by_user(all_input_user)
 
     def analyze_category_select_by_user(all_input_user):
         all_category_want_by_user = []
-        if len(all_input_user) == 1:
-            for index_all_input_user, character_all_input_user in enumerate(
-                    all_input_user[0]):
-                if character_all_input_user == '-':
-                    index_start_input_current = index_all_input_user + 1
-                    index_end_input_current = index_start_input_current
-                    while all_input_user[0][index_end_input_current] != '-':
-                        if index_end_input_current < len(all_input_user[0]) - 1:
-                            index_end_input_current += 1
-                        elif index_end_input_current == len(
-                                all_input_user[0]) - 1:
-                            break
-                    # [:index_end_input_current +1] car la valeur d'index est un stop exclu. Il n'est pas pris en compte
-                    input_current = all_input_user[0][
-                                    index_start_input_current:index_end_input_current + 1]
-                    if input_current[-1] == '-':
-                        all_category_want_by_user.append(input_current[:-2])
-                    else:
-                        all_category_want_by_user.append(input_current)
+        for index_all_input_user, character_all_input_user in enumerate(
+                all_input_user):
+            if character_all_input_user == '-':
+                index_start_input_current = index_all_input_user + 1
+                index_end_input_current = index_start_input_current
+                while all_input_user[index_end_input_current] != '-':
+                    if index_end_input_current < len(all_input_user) - 1:
+                        index_end_input_current += 1
+                    elif index_end_input_current == len(
+                            all_input_user) - 1:
+                        break
+                # [:index_end_input_current +1] car la valeur d'index est un stop exclu. Il n'est pas pris en compte
+                input_current = all_input_user[
+                                index_start_input_current:index_end_input_current + 1]
+                if input_current[-1] == '-':
+                    all_category_want_by_user.append(input_current[:-2])
                 else:
-                    continue
+                    all_category_want_by_user.append(input_current)
+            else:
+                continue
         comparate_name_ask_with_name_category(all_category_want_by_user)
 
     def comparate_name_ask_with_name_category(category_to_analyze):
@@ -193,8 +184,7 @@ def selection_category_for_scrap_func(all_url_home_page_category_book):
                                        'Reformulez sous la forme \'-noms categories\'',
                                        '-pass', 'ne rien ajouter',
                                        '-quit', 'interrompt le script'))
-                # .format(category_in_analyze))
-                if reword != '-pass':
+                if reword != '-pass' and reword != '-quit':
                     category_reword.append(reword[1:])
                 elif reword == '-quit':
                     sys.exit()
