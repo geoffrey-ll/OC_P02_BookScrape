@@ -5,6 +5,8 @@ test.py
 sandbox.py
 *.csv
 output/
+commit.txt
+TODO.txt
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,pycharm,windows,macos,linux
