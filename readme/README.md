@@ -36,6 +36,15 @@ Relancer le script réécrira le .csv de la catégorie, mais ne retéléchargera
 
 ## Utilisation ##
 
+Le script s'utilise à partir d'un terminal, de 4 façons différentes.
+
+![option_scrap.py](option_scrap.py.jpg)
+1. L'option 'book' suivit de l'url d'un livre spécifique, pour recueillir les données d'un seul livre.\
+Tous les .csv écrits et les couvertures des livres téléchargées via cette option, sont stockés dans le dossier './output/zingle'\
+![two_books_of_contemporary_category_in_folder_zingle](two_books_of_contemporary_category_in_folder_zingle.jpg)
+2. 
+3. 
+4. 
 
 
 ### Requierements

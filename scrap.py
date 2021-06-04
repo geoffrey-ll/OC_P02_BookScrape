@@ -3,8 +3,9 @@ import sys
 
 from scrap_package.c_scrap_books_urls_in_category import scrap_books_urls_in_category_func
 from scrap_package.e_scrap_data import scrap_data_func
-from scrap_package.main_p02_scrap import main_without_selection
-from scrap_package.main_p02_scrap import main_with_selection
+from scrap_package.main_p02_scrap import main_with_all
+from scrap_package.main_p02_scrap import main_with_input
+from scrap_package.main_p02_scrap import main_with_book
 
 
 user_args = sys.argv
@@ -20,21 +21,21 @@ def description():
 def main(user_args):
     try:
         if user_args[1] == 'book':
-            data_desired = scrap_data_func([user_args[2]])
-            pp(data_desired)
+            main_with_book(user_args[2])
 
         elif user_args[1] == 'category':
             url_books_of_category = scrap_books_urls_in_category_func(user_args[2])
             pp(url_books_of_category)
 
         elif user_args[1] == 'all':
-            main_without_selection()
+            main_with_all()
 
         elif user_args[1] == 'input':
-            main_with_selection()
+            main_with_input()
         else:
             description()
     except Exception as e:
+        pass
         print(str(e))
         description()
 

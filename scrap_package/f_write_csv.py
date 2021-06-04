@@ -20,13 +20,38 @@ def write_data_desired_in_csv_func(data_desired):
 
     # Vérifie qu'il existe './output/name_category'
     # Sinon crée le dossier.
-    folder = 'output/' + name_category
-    if os.path.exists(folder) == False:
-        os.mkdir(folder)
+
 
     # Nom et chemin du fichier .csv
-    name_file = folder + '/' + \
-                'data_books_in_' + name_category +'_category' + '.csv'
+    name_file = ''
+    if len(data_desired.get('category')) == 1:
+        title_adjust = re.sub('[\\\\/<>|]', '', data_desired['title'][0].lower()
+                              .replace('?', '¿')
+                              .replace('*', '^')
+                              .replace(':', '_-')
+                              .replace('"', '\'')
+                              .replace(' ','_'))
+        upc_book = '_upc_' + data_desired['universal_product_code (upc)'][0] + '.csv'
+        start_name_file = 'output/zingle/' + title_adjust
+        name_file_temp = start_name_file + upc_book
+        path_file = os.getcwd() + '/' + start_name_file + upc_book
+        if len(path_file) >= 260:
+            # vital_module_gwet = 15
+            # gap_over_limit est le nombre de caractères en trop dans le
+            # titre du livre. Dans notre cas, la variable title_adjust.
+            gap_over_limit = len(name_file_temp) - 260 + len('[…]') + len(upc_book)
+            short_name = start_name_file[:-gap_over_limit] + '[…]' + upc_book
+            # On vérifie qu'il n'existe pas déjà une cover du même nom, pour
+            # éviter les download inutile et réduire la durée du script.
+            name_file = short_name
+        else:
+            name_file = start_name_file + upc_book
+    else:
+        folder = 'output/' + name_category
+        if os.path.exists(folder) == False:
+            os.mkdir(folder)
+        name_file = folder + '/' + \
+                    'data_books_in_' + name_category +'_category' + '.csv'
 
     # Nécessaire pour générer le nombre de row adéquat à l'aide d'une boucle for
     quantity_values_by_key = len(data_desired['title'])

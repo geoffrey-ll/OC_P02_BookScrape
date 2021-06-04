@@ -4,10 +4,10 @@ import re
 from slugify import slugify
 
 
-def cover_ddl_func(all_data):
+def cover_ddl_func(data_desired):
     # Dans all_data les noms de catégories sont en .capitalize et avec un
     # espace entre les mots. name_category change cela.
-    name_category = all_data.get('category')[0].lower().replace(' ', '_')
+    name_category = data_desired.get('category')[0].lower().replace(' ', '_')
 
     # Dossier où est exécuté le scrip = './'
 
@@ -18,9 +18,14 @@ def cover_ddl_func(all_data):
 
     # Vérifie qu'il existe './output/name_category/cover_name_category'
     # Sinon crée le dossier.
-    folder_cover = 'output/' + name_category + '/cover_' + name_category
-    if os.path.exists(folder_cover) == False:
-        os.mkdir(folder_cover)
+    folder_cover = ''
+    if len(data_desired.get('category')) == 1:
+        folder_cover = 'output/zingle/'
+        pass
+    else:
+        folder_cover = 'output/' + name_category + '/cover_' + name_category
+        if os.path.exists(folder_cover) == False:
+            os.mkdir(folder_cover)
 
 
     # Dans all_data, les noms des titres de livres ont plusieurs majuscules et
@@ -28,19 +33,19 @@ def cover_ddl_func(all_data):
     # fichiers. title_adjust change cela.
     # Vérifie que la cover 'folder_cover/title_adjust.jpg' n'existe pas.
     # Si absente alors la download.
-    for idx in range(len(all_data['image_url'])):
+    for idx in range(len(data_desired['image_url'])):
         # text = all_data['title'][idx].lower().replace('"', '\'').replace(' ', '_')
-        title_adjust = re.sub('[\\\\/<>|]', '', all_data['title'][idx].lower()
+        title_adjust = re.sub('[\\\\/<>|]', '', data_desired['title'][idx].lower()
                               .replace('?', '¿')
                               .replace('*', '^')
                               .replace(':', '_-')
                               .replace('"', '\'')
                               .replace(' ','_'))
 
-        upc_book = '_upc_' + all_data['universal_product_code (upc)'][idx]
+        upc_book = '_upc_' + data_desired['universal_product_code (upc)'][idx] + '.jpg'
        #  title_adjust = upc + '-' + slugify
-        name_cover = folder_cover + '/' + title_adjust + upc_book + '.jpg'
-
+        start_name_cover = folder_cover + '/' + title_adjust
+        name_cover = start_name_cover + upc_book
         if os.path.exists(name_cover) == False:
             # La longueur de chemin complet du fichier de la cover et nécessaire
             # pour gérer l'exception des noms trop long.
@@ -72,14 +77,14 @@ def cover_ddl_func(all_data):
                 vital_module_gwet = 15
                 # gap_over_limit est le nombre de caractères en trop dans le
                 # titre du livre. Dans notre cas, la variable title_adjust.
-                gap_over_limit = len(path) - 260 + len('[_].jpg') + len(upc_book)+ vital_module_gwet
-                short_name = name_cover[:-gap_over_limit] + '[…]' + upc_book + '.jpg'
+                gap_over_limit = len(name_cover) - 260 + vital_module_gwet + len('[…]') + len(upc_book)
+                short_name = start_name_cover[:-gap_over_limit] + '[…]' + upc_book
                 # On vérifie qu'il n'existe pas déjà une cover du même nom, pour
                 # éviter les download inutile et réduire la durée du script.
                 if os.path.exists(short_name) == False:
-                    wget.download(all_data['image_url'][idx], out=short_name)
+                    wget.download(data_desired['image_url'][idx], out=short_name)
             else:
-                wget.download(all_data['image_url'][idx], out=name_cover)
+                wget.download(data_desired['image_url'][idx], out=name_cover)
 
 # telecharger_images()
 

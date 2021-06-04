@@ -25,6 +25,8 @@ from scrap_package.g_cover_download import cover_ddl_func
 #
 # # Possiblité de mettre le script en pause ? De l'interrompre ?
 #
+#
+#
 # # Dans fonction écriture .csv, vérifier si plusieurs éditions d'une œuvre sont référencés. Si oui
 # ajouter une mention après le nom du titre, genre 'édition A'.
 
@@ -43,7 +45,7 @@ def check_url_site(arg):
             return all_url_home_pages_category_book
 
 
-def main_with_selection():
+def main_with_input():
     all_url_home_pages_category_book = check_url_site('URL_HOME_SITE')
     url_home_category_to_scrap = selection_category_for_scrap_func(all_url_home_pages_category_book)
     for idx, url_category in enumerate(url_home_category_to_scrap):
@@ -58,7 +60,7 @@ def main_with_selection():
         cover_ddl_func(data)
 
 
-def main_without_selection():
+def main_with_all():
     url_home_all_category_book = collect_url_home_all_category_func('URL_HOME_SITE')
     for idx, url_category in enumerate(url_home_all_category_book):
         print('La catégorie {0} ({1}/{2}) est en cours.\n'.format(url_category[51:-13].replace('_', ' ')
@@ -69,3 +71,9 @@ def main_without_selection():
         data_desired = scrap_data_func(url_books)
         write_data_desired_in_csv_func(data_desired)
         cover_ddl_func(data_desired)
+
+def main_with_book(url_input):
+    url_book = check_url_books_func([url_input])
+    data = scrap_data_func(url_book)
+    write_data_desired_in_csv_func(data)
+    cover_ddl_func(data)
