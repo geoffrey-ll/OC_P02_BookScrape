@@ -1,8 +1,12 @@
-# les tags #
 
-python, openclassrooms (s'il n'existe pas en créer un a l'aide du site),
-windows ?, pycharm ?
-licence libre
+![open_class_rooms](https://img.shields.io/badge/OpenClassRooms-Project02-limegreen?labelColor=blueviolet&style=plastic)
+![built_by](https://img.shields.io/badge/Built%20by-Developers%20%3Cgeoffrey_ll%3E-black?labelColor=orange&style=plastic)
+
+![made_with_python](https://img.shields.io/badge/Made%20With-Python-darkgreen?logo=python&labelColor=red&style=plastic)
+![IDE use](https://img.shields.io/badge/IDE%20use-PyCharm-darkgreen?logo=pycharm&labelColor=red&style=plastic)
+![OS_use](https://img.shields.io/badge/OS%20use-Windows-blue?labelColor=red&style=plastic&logo=windows)
+
+![open_source](https://img.shields.io/badge/licence-libre-darkkhaki?labelColor=red&style=plastic)
 
 # scrap.py #
 
