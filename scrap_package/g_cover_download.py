@@ -36,8 +36,10 @@ def cover_ddl_func(all_data):
                               .replace(':', '_-')
                               .replace('"', '\'')
                               .replace(' ','_'))
+
+        upc_book = '_upc_' + all_data['universal_product_code (upc)'][idx]
        #  title_adjust = upc + '-' + slugify
-        name_cover = folder_cover + '/' + title_adjust + '.jpg'
+        name_cover = folder_cover + '/' + title_adjust + upc_book + '.jpg'
 
         if os.path.exists(name_cover) == False:
             # La longueur de chemin complet du fichier de la cover et nécessaire
@@ -70,8 +72,8 @@ def cover_ddl_func(all_data):
                 vital_module_gwet = 15
                 # gap_over_limit est le nombre de caractères en trop dans le
                 # titre du livre. Dans notre cas, la variable title_adjust.
-                gap_over_limit = len(path) - 260 + len('[_].jpg') + vital_module_gwet
-                short_name = name_cover[:-gap_over_limit] + '[…].jpg'
+                gap_over_limit = len(path) - 260 + len('[_].jpg') + len(upc_book)+ vital_module_gwet
+                short_name = name_cover[:-gap_over_limit] + '[…]' + upc_book + '.jpg'
                 # On vérifie qu'il n'existe pas déjà une cover du même nom, pour
                 # éviter les download inutile et réduire la durée du script.
                 if os.path.exists(short_name) == False:
