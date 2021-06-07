@@ -51,13 +51,19 @@ Tous les .csv écrits et les couvertures des livres téléchargées via cette op
 2. L'option 'category', suivit le l'url de la page '^.index.html' d'une catégorie, pour recueillir les informations de toutes une catégorie.\
  **Attention**, si la catégorie a plusieurs pages, il faut impérativement renseigner la première page qui finit en '/index.html'\
 3. L'option 'all' pour recueillir les données pour tous les livres de toutes les catégorie de livre.
-4. 
+4. L'option input, pour recueillir les données d'une ou plusieurs catégories, via un menu à utiliser dans le terminal. \
+![option_input_menu_home](readme/option_input_menu_home.jpg)\
+Via cette option, ont peut sélectionner tous les catégories du site, ou n'en sélectionner que quelques unes.\
+Les .csv et couvertures de livres sont stockés au même endroit.\
+La sélection se fait par demande d'input à l'utilisateur.
 
 ## Installation ##
 
 ### Environnement virtuel
 
 ### Requierements
+
+Une fois l'environnement virtuel activé, entrez la commande 'pip install -r requierements.txt' dans le terminal, pour installer tous les modules requit pour l'utilisation de scrap.py.
 
 
 ### Package
