@@ -1,6 +1,6 @@
 from pprint import pprint as pp
+import re
 
-# import re
 import scrap_package as sp
 from scrap_package import collect_url_home_all_category_func
 from scrap_package.b_selection_category_to_scrap import selection_category_for_scrap_func
@@ -77,3 +77,16 @@ def main_with_book(url_input):
     data = scrap_data_func(url_book)
     write_data_desired_in_csv_func(data)
     cover_ddl_func(data)
+
+
+def main_with_category(url_input):
+    category = re.sub('^.+books/|_[0-9]+.+$', '', url_input).capitalize().replace('-', ' ')
+    print('\nScrap des données pour la catégorie \'{}\' en cours'.format(category))
+    url_books_of_category = scrap_books_urls_in_category_func(url_input)
+    url_books_check = check_url_books_func(url_books_of_category)
+    data = scrap_data_func(url_books_check)
+    print('Écriture du .csv pour la catégorie \'{}\' en cours'.format(category))
+    write_data_desired_in_csv_func(data)
+    print('Téléchargement des couvertures de livres de la catégorie \'{}\' en cours'.format(category))
+    cover_ddl_func(data)
+    print('\n\nDonnées récupérées')
