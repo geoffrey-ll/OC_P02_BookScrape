@@ -13,10 +13,10 @@ user_args = sys.argv
 
 
 def description():
-    print('\n> python scrap.py book http://book_url'
-          '\n> python scrap.py category http://category_url/index.html'
-          '\n> python scrap.py all'
-          '\n> python scrap.py input')
+    print('\n> python llopis_scrap.py book http://book_url'
+          '\n> python llopis_scrap.py category http://category_url/index.html'
+          '\n> python llopis_scrap.py all'
+          '\n> python llopis_scrap.py input')
 
 
 def main(user_args):
