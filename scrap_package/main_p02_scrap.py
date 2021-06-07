@@ -61,20 +61,20 @@ def main_with_input():
 
 
 def main_with_all():
-    url_home_all_category_book = collect_url_home_all_category_func('URL_HOME_SITE')
-    for idx, url_category in enumerate(url_home_all_category_book):
+    all_url_home_pages_category_book = check_url_site('URL_HOME_SITE')
+    for idx, url_category in enumerate(all_url_home_pages_category_book):
         print('La catégorie {0} ({1}/{2}) est en cours.\n'.format(url_category[51:-13].replace('_', ' ')
                                                                                      .replace('-', ' '),
-                                                       idx + 1, len(url_home_all_category_book)))
+                                                       idx + 1, len(all_url_home_pages_category_book)))
         url_books_of_category = scrap_books_urls_in_category_func(url_category)
-        url_books = check_url_books_func(url_books_of_category)
-        data_desired = scrap_data_func(url_books)
+        url_books_ok = check_url_books_func(url_books_of_category)
+        data_desired = scrap_data_func(url_books_ok)
         write_data_desired_in_csv_func(data_desired)
         cover_ddl_func(data_desired)
 
 def main_with_book(url_input):
-    url_book = check_url_books_func([url_input])
-    data = scrap_data_func(url_book)
+    url_book_ok = check_url_books_func([url_input])
+    data = scrap_data_func(url_book_ok)
     write_data_desired_in_csv_func(data)
     cover_ddl_func(data)
 
@@ -83,8 +83,8 @@ def main_with_category(url_input):
     category = re.sub('^.+books/|_[0-9]+.+$', '', url_input).capitalize().replace('-', ' ')
     print('\nScrap des données pour la catégorie \'{}\' en cours'.format(category))
     url_books_of_category = scrap_books_urls_in_category_func(url_input)
-    url_books_check = check_url_books_func(url_books_of_category)
-    data = scrap_data_func(url_books_check)
+    url_books_ok = check_url_books_func(url_books_of_category)
+    data = scrap_data_func(url_books_ok)
     print('Écriture du .csv pour la catégorie \'{}\' en cours'.format(category))
     write_data_desired_in_csv_func(data)
     print('Téléchargement des couvertures de livres de la catégorie \'{}\' en cours'.format(category))
