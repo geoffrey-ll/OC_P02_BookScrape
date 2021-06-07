@@ -7,6 +7,7 @@
 
 ![open_source](https://img.shields.io/badge/licence-libre-darkkhaki?labelColor=red&style=plastic)
 
+
 # llopis_scrap.py #
 
 ## Description. ##
@@ -65,11 +66,13 @@ La sélection se fait par demande d'input à l'utilisateur.
 Une fois l'environnement virtuel activé, lancer la commande 'pip install -r requierements.txt' dans le terminal, permet d'installer tous les modules requit pour l'utilisation de llopis_scrap.py.
 
 
+## À propos ##
+
 ### Package ###
 
 llopis_scrap.py utilise un ensemble de modules locals, réunis dans le package scrap_package.
 
-Pour chaque module, va suivre une description, sa structure, ses inputs, ses transformations et ses ouputs.
+Pour chaque module, une description, sa structure, ses inputs, ses transformations et ses ouputs.
 
 - a_collect_url_home_all_category.py\
 \
@@ -120,6 +123,13 @@ Ce module sert dans toutes les options. Il télécharge l'image de couverture de
     - Transformation : Détermine la catégorie concernée. Si le dossier './output/' n'existe pas, le crée. Reconnait si l'on vient depuis l'option 'book', dans ce cas stock l'image dans le dossier './output/zingle/name_book_upc.jpg', sinon les stockent dans le dossier './output/name_category/cover_name_category/'. Limite le nom du chemin à 245 caractère (260 limite par défault de windows, 15 nécessaire au module), tronque dans le nom du livre si besoin.
     - Output : Les images au format 'jpg',  dont l'url est présente dans le dictionnaire en input.
 
+- main_p02_scrap.py\
+\
+Ce module sert de main pour les 4 options disponible.
+    - Input : Pour les options 'book' et 'catégory', l'url renseignée, sinon pas d'input.
+    - Transformation : Principalement des appels de fonctions.
+    - Output : Le bon enchaînement des modules.
+
 
 
 ### Bugs connus ###
@@ -128,40 +138,4 @@ Indiquer une solution envisagée pour sa réparation
 #### Idées d'amélioration (optionnel) ###
 Permettre à l'utilisateur de définir le nombre de caractères à utiliser
 pour le nom de cover.
-
-
-
-
-
-
-
-
-
-
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-
-eaea
-
-
-
-
-
-
 

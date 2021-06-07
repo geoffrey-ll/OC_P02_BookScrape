@@ -30,48 +30,6 @@ from scrap_package.g_cover_download import cover_ddl_func
 # # Dans fonction écriture .csv, vérifier si plusieurs éditions d'une œuvre sont référencés. Si oui
 # ajouter une mention après le nom du titre, genre 'édition A'.
 
-def check_url_site(arg):
-    if arg != 'URL_HOME_SITE':
-        all_url_home_pages_category_book = collect_url_home_all_category_func(arg)
-        return all_url_home_pages_category_book
-
-    elif arg == 'URL_HOME_SITE':
-        all_url_home_pages_category_book = collect_url_home_all_category_func(arg)
-        if all_url_home_pages_category_book == 0:
-            url_site = input('\n'
-                             'Quelle est l\'adresse du site à scrapper ?\n')
-            return check_url_site(url_site)
-        else:
-            return all_url_home_pages_category_book
-
-
-def main_with_input():
-    all_url_home_pages_category_book = check_url_site('URL_HOME_SITE')
-    url_home_category_to_scrap = selection_category_for_scrap_func(all_url_home_pages_category_book)
-    for idx, url_category in enumerate(url_home_category_to_scrap):
-        # category = re.findall('[oks/-_[0-9]+', url_category.replace('_', ' '))
-        category = url_category[51:-13].replace('_', ' ').replace('-', ' ')
-        print('La catégorie {0} ({1}/{2}) est en cours.\n'.format(category,
-                                                       idx + 1, len(url_home_category_to_scrap)))
-        url_books_to_scrap = scrap_books_urls_in_category_func(url_category)
-        url_books_ok = check_url_books_func(url_books_to_scrap)
-        data = scrap_data_func(url_books_ok)
-        write_data_desired_in_csv_func(data)
-        cover_ddl_func(data)
-
-
-def main_with_all():
-    all_url_home_pages_category_book = check_url_site('URL_HOME_SITE')
-    for idx, url_category in enumerate(all_url_home_pages_category_book):
-        print('La catégorie {0} ({1}/{2}) est en cours.\n'.format(url_category[51:-13].replace('_', ' ')
-                                                                                     .replace('-', ' '),
-                                                       idx + 1, len(all_url_home_pages_category_book)))
-        url_books_of_category = scrap_books_urls_in_category_func(url_category)
-        url_books_ok = check_url_books_func(url_books_of_category)
-        data_desired = scrap_data_func(url_books_ok)
-        write_data_desired_in_csv_func(data_desired)
-        cover_ddl_func(data_desired)
-
 def main_with_book(url_input):
     url_book_ok = check_url_books_func([url_input])
     data = scrap_data_func(url_book_ok)
@@ -90,3 +48,46 @@ def main_with_category(url_input):
     print('Téléchargement des couvertures de livres de la catégorie \'{}\' en cours'.format(category))
     cover_ddl_func(data)
     print('\n\nDonnées récupérées')
+
+
+def check_url_site(arg):
+    if arg != 'URL_HOME_SITE':
+        all_url_home_pages_category_book = collect_url_home_all_category_func(arg)
+        return all_url_home_pages_category_book
+
+    elif arg == 'URL_HOME_SITE':
+        all_url_home_pages_category_book = collect_url_home_all_category_func(arg)
+        if all_url_home_pages_category_book == 0:
+            url_site = input('\n'
+                             'Quelle est l\'adresse du site à scrapper ?\n')
+            return check_url_site(url_site)
+        else:
+            return all_url_home_pages_category_book
+
+
+def main_with_all():
+    all_url_home_pages_category_book = check_url_site('URL_HOME_SITE')
+    for idx, url_category in enumerate(all_url_home_pages_category_book):
+        print('La catégorie {0} ({1}/{2}) est en cours.\n'.format(url_category[51:-13].replace('_', ' ')
+                                                                                     .replace('-', ' '),
+                                                       idx + 1, len(all_url_home_pages_category_book)))
+        url_books_of_category = scrap_books_urls_in_category_func(url_category)
+        url_books_ok = check_url_books_func(url_books_of_category)
+        data_desired = scrap_data_func(url_books_ok)
+        write_data_desired_in_csv_func(data_desired)
+        cover_ddl_func(data_desired)
+
+
+def main_with_input():
+    all_url_home_pages_category_book = check_url_site('URL_HOME_SITE')
+    url_home_category_to_scrap = selection_category_for_scrap_func(all_url_home_pages_category_book)
+    for idx, url_category in enumerate(url_home_category_to_scrap):
+        # category = re.findall('[oks/-_[0-9]+', url_category.replace('_', ' '))
+        category = url_category[51:-13].replace('_', ' ').replace('-', ' ')
+        print('La catégorie {0} ({1}/{2}) est en cours.\n'.format(category,
+                                                       idx + 1, len(url_home_category_to_scrap)))
+        url_books_to_scrap = scrap_books_urls_in_category_func(url_category)
+        url_books_ok = check_url_books_func(url_books_to_scrap)
+        data = scrap_data_func(url_books_ok)
+        write_data_desired_in_csv_func(data)
+        cover_ddl_func(data)
