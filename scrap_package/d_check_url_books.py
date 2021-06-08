@@ -22,7 +22,6 @@ def check_url_books_func(url_books):
         return url_books
     else:
         if len(quantity_error_url_book) == 1:
-            print('quantity_error_url_book', len(quantity_error_url_book))
             print('\nL\'url :\n{0}\nest invalide !'
                   .format(url_books[quantity_error_url_book[0]]))
         else:
