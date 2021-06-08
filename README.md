@@ -56,18 +56,39 @@ Tous les .csv écrits et les couvertures des livres téléchargées via cette op
 
 4. L'option input, pour recueillir les données d'une ou plusieurs catégories, via un menu à utiliser dans le terminal. \
 ![option_input_menu_home](readme/option_input_menu_home.jpg)\
-Via cette option, ont peut sélectionner tous les catégories du site, ou n'en sélectionner que quelques unes.\
+Via cette option, ont peut sélectionner toutes les catégories du site, ou n'en sélectionner que quelques unes.\
 Les .csv et couvertures de livres sont stockés au même endroit.\
 La sélection se fait par demande d'input à l'utilisateur.
 
 
 ## Installation ##
 
+Dans les sous-sections suivantes, les lignes de commande sont illustrées depuis le répertoire de travail :\
+![working_directory](readme\working_directory.jpg)\
+Les différents fichiers du script s'y trouvent.\
+Pour utiliser les lignes de commandes, il faut que votre répertoire de travail, soit celui où se trouvent les différents fichiers du script.
+
+
 ### Environnement virtuel ###
+
+Sous Windows, avec l'IDE PyCharm.
+
+- Pour créer l'environnement virtuel lancer la commande suivante :\
+![command_line_create_env](readme\command_line_create_env.jpg)\
+Cela créra un environement virtuel nommé 'env'
+
+- Si l'environnement virtuel est actif, son nom apparaîtra au début de la ligne de commande, comme suit :\
+![env_activate](readme\env_activate.jpg)
+
+- Sinon, pour activer l'env, il faut lancer la commande :\
+![command_line_activate_env](readme\command_line_activate_env.jpg)
+
 
 ### Requierements ###
 
-Une fois l'environnement virtuel activé, lancer la commande 'pip install -r requierements.txt' dans le terminal, permet d'installer tous les modules requit pour l'utilisation de llopis_scrap.py.
+Une fois l'environnement virtuel activé, lancer la commande suivante :\
+![command_line_install_requierements](readme\command_line_install_requierements.jpg)\
+Cela installera tous les modules renseignés dans le fichier requierements.txt.
 
 
 ## À propos ##
@@ -138,6 +159,8 @@ Ce module sert de main pour les 4 options disponible.
 
 ### Bugs connus ###
 Indiquer une solution envisagée pour sa réparation
+
+Si vous trouver un bug, merci de m'envoyer un e-mail @.net
 
 #### Idées d'amélioration (optionnel) ###
 Permettre à l'utilisateur de définir le nombre de caractères à utiliser

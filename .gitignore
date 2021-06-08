@@ -1,10 +1,13 @@
 env/
 venv/
 .idea/
+output/
+test/
+
 test.py
 sandbox.py
 *.csv
-output/
+
 commit.txt
 TODO.txt
 message_for_commit.txt
