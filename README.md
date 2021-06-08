@@ -64,7 +64,7 @@ La sélection se fait par demande d'input à l'utilisateur.
 ## Installation ##
 
 Dans les sous-sections suivantes, les lignes de commande sont illustrées depuis le répertoire de travail :\
-![working_directory](readme\working_directory.jpg)\
+![working_directory](readme/working_directory.jpg)\
 Les différents fichiers du script s'y trouvent.\
 Pour utiliser les lignes de commandes, il faut que votre répertoire de travail, soit celui où se trouvent les différents fichiers du script.
 
@@ -74,20 +74,20 @@ Pour utiliser les lignes de commandes, il faut que votre répertoire de travail,
 Sous Windows, avec l'IDE PyCharm.
 
 - Pour créer l'environnement virtuel lancer la commande suivante :\
-![command_line_create_env](readme\command_line_create_env.jpg)\
+![command_line_create_env](readme/command_line_create_env.jpg)\
 Cela créra un environement virtuel nommé 'env'
 
 - Si l'environnement virtuel est actif, son nom apparaîtra au début de la ligne de commande, comme suit :\
-![env_activate](readme\env_activate.jpg)
+![env_activate](readme/env_activate.jpg)
 
 - Sinon, pour activer l'env, il faut lancer la commande :\
-![command_line_activate_env](readme\command_line_activate_env.jpg)
+![command_line_activate_env](readme/command_line_activate_env.jpg)
 
 
 ### Requierements ###
 
 Une fois l'environnement virtuel activé, lancer la commande suivante :\
-![command_line_install_requierements](readme\command_line_install_requierements.jpg)\
+![command_line_install_requierements](readme/command_line_install_requierements.jpg)\
 Cela installera tous les modules renseignés dans le fichier requierements.txt.
 
 
