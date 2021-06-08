@@ -1,10 +1,12 @@
-import os
 import wget
-import re
 from slugify import slugify
 
+import os
+import re
 
-def cover_ddl_func(data_desired):
+
+
+def cover_ddl_func(data_desired, option):
     # Dans all_data les noms de catégories sont en .capitalize et avec un
     # espace entre les mots. name_category change cela.
     name_category = data_desired.get('category')[0].lower().replace(' ', '_')
@@ -19,7 +21,7 @@ def cover_ddl_func(data_desired):
     # Vérifie qu'il existe './output/name_category/cover_name_category'
     # Sinon crée le dossier.
     folder_cover = ''
-    if len(data_desired.get('category')) == 1:
+    if option == 'book_option':
         folder_cover = 'output/zingle/'
         pass
     else:

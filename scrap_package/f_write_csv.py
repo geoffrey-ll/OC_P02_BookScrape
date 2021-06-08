@@ -1,12 +1,11 @@
 import re
-from pprint import pprint as pp
 import os
 import csv
-
+from pprint import pprint as pp
 
 #docstring à créer pour cette fonction (selon pylint).
 # Écriture dans un .csv des informations récoltées de chaque url visités.
-def write_data_desired_in_csv_func(data_desired):
+def write_data_desired_in_csv_func(data_desired, option):
     # Dans data_desired les noms de catégories sont en .capitalize et avec un
     # espace entre les mots. name_category change cela.
     name_category = data_desired.get('category')[0].lower().replace(' ', '_')
@@ -23,8 +22,7 @@ def write_data_desired_in_csv_func(data_desired):
 
 
     # Nom et chemin du fichier .csv
-    name_file = ''
-    if len(data_desired.get('category')) == 1:
+    if option == 'book_option':
         title_adjust = re.sub('[\\\\/<>|]', '', data_desired['title'][0].lower()
                               .replace('?', '¿')
                               .replace('*', '^')
@@ -56,7 +54,7 @@ def write_data_desired_in_csv_func(data_desired):
     # Nécessaire pour générer le nombre de row adéquat à l'aide d'une boucle for
     quantity_values_by_key = len(data_desired['title'])
 
-    # Avec en encoding='utf-8', j'ai de nombreux caractères indésirables. Comme
+    # Avec un encoding='utf-8', j'ai de nombreux caractères indésirables. Comme
     # le 'Â' avant le symbole de la livre Streling, où le 'â€•' au lieu de '-',
     # pour ne citer que deux exemples.
     #
