@@ -30,14 +30,8 @@ def scrap_data_func(url_books):
 
     for url_book in url_books:
         response_url_book = sp.rq_resp(url_book)
-        # Nécessaire de préciser à BeautifulSoup que le contenu de
-        # response_url_book doit être lu en tant que utf-8.
-        # Cela permet la compréhension de tout les caractères (utile pour
-        # caractères particuliers présent dans de nombreuses descriptions).
-        # Cela implique que soup_book_home est transformée en str() donc la
-        # méthode .text() ne doit pas être appliquée.
-        soup_book_home = BeautifulSoup(response_url_book.content
-                                       .decode('utf-8'), 'html.parser')
+        soup_book_home = BeautifulSoup(response_url_book.content, 'html.parser')
+
         tdstag_content_product_information = soup_book_home.findAll('td')
         h1_title_book = soup_book_home.find('h1').text
         ptag_description_and_rating = soup_book_home.findAll('p')
@@ -68,9 +62,7 @@ def scrap_data_func(url_books):
             .findall(str("[0-9]+"), tdstag_content_product_information[5].text)[0])
         # Collecte du titre présent dans la balise h1
         data_desired['title'].append(h1_title_book)
-        # Les caractères particuliers (tel "…" "'"), s'affiche correctement
-        # parce que soup_book_home est decoder en utf-8.
-        # data_desired['product_description'].append(est en utf-8)
+        # Collecte des informations présentent dans des ptag
         data_desired['product_description'] \
             .append(ptag_description_and_rating[3].text)
         # Dictionnaire pour traduire en français le nombre d'étoiles qu'a un

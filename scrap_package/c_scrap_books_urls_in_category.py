@@ -30,11 +30,7 @@ def scrap_books_urls_in_category_func(url_category):
         return \
             print('L\'url \n{}\nn\'est pas valide.'.format(url_category_home))
 
-    # Utiliser requeste_home_category.text à la place de
-    # response_home_category.content.decode('utf-8) donnerais un résultat
-    # équivalent. Je laisse le .decode('utf-8) pour assurer d'un encodage
-    # en utf-8.
-    soup_home_category = BeautifulSoup(response_home_category.content.decode('utf-8'), 'html.parser')
+    soup_home_category = BeautifulSoup(response_home_category.content, 'html.parser')
     quantity_books_in_category = soup_home_category.findAll(
         'form', {'class': 'form-horizontal'})[0].find('strong').text
 
@@ -61,7 +57,7 @@ def scrap_books_urls_in_category_func(url_category):
     for url_pages in url_all_pages_category:
         request_page_category = sp.rq_resp(url_pages)
         soup_page_category = BeautifulSoup(
-            request_page_category.content.decode('utf-8'), 'html.parser')
+            request_page_category.content, 'html.parser')
         h3tag_books_show_by_page = soup_page_category.findAll('h3')
         for h3tag_book in h3tag_books_show_by_page:
             atag_book = h3tag_book.find('a')
