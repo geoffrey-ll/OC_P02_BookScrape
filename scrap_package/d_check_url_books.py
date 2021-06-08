@@ -1,5 +1,4 @@
-import requests as rq
-
+import scrap_package as sp
 
 # docstring à créer pour cette fonction (selon pylint)
 # Vérfie que les requêtes sur les url_books renvoi un code 200, puis appel la
@@ -14,8 +13,8 @@ def check_url_books_func(url_books):
     # url_books.pop(2)
     quantity_error_url_book = []
     for url_book in url_books:
-        response_url_book = rq.get(url_book)
-        if response_url_book.ok is False:
+        response_url_book = sp.rq_resp(url_book)
+        if response_url_book.ok != True:
             quantity_error_url_book.append(url_books.index(url_book))
         else:
             continue

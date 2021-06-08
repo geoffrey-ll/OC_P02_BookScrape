@@ -1,7 +1,9 @@
 from urllib.parse import urljoin
-import requests as rq
 from bs4 import BeautifulSoup
+
 import sys
+
+import scrap_package as sp
 
 # Collecte les url_home_categery_book de chaqu'une des catégries de livres du
 # site : http://books.toscrape.com/.
@@ -17,7 +19,7 @@ def collect_url_home_all_category_func(url_site):
 
 
 
-    response_url_home_site = rq.get(URL_HOME_SITE)
+    response_url_home_site = sp.rq_resp(URL_HOME_SITE)
 
     # Controle de l'url à impléementer. Vérification que l'url ne pointe pas
     # vers une page type "Hum, nou ne parvenons pas à trouver ce site".

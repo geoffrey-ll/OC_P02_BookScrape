@@ -1,8 +1,8 @@
-import requests as rq
-import re
 from bs4 import BeautifulSoup
-from scrap_package.e_scrap_data import scrap_data_func
-# from write_csv import write_data_desired_in_csv_func
+
+import re
+
+import scrap_package as sp
 
 
 def scrap_books_urls_in_category_func(url_category):
@@ -25,7 +25,7 @@ def scrap_books_urls_in_category_func(url_category):
     # Si l'erreur est après, la requête renvoi le code html 404, si elle est
     # dans le nom de domaine, la requête semble ne pas aboutir. (aucun serveur
     # n'est atteint pour renvoiyer un code html 404…)
-    response_home_category = rq.get(url_category_home)
+    response_home_category = sp.rq_resp(url_category_home)
     if response_home_category.ok is False:
         return \
             print('L\'url \n{}\nn\'est pas valide.'.format(url_category_home))
@@ -59,7 +59,7 @@ def scrap_books_urls_in_category_func(url_category):
     # Collecte des url de tous les livres de toutes les pages de la categorie,
     # et les stokent dans la liste url_books_of_category.
     for url_pages in url_all_pages_category:
-        request_page_category = rq.get(url_pages)
+        request_page_category = sp.rq_resp(url_pages)
         soup_page_category = BeautifulSoup(
             request_page_category.content.decode('utf-8'), 'html.parser')
         h3tag_books_show_by_page = soup_page_category.findAll('h3')
@@ -70,15 +70,3 @@ def scrap_books_urls_in_category_func(url_category):
                 atag_book['href'][9:])
 
     return url_books_of_category
-        
-
-    # controle_url_books(url_books_of_category)
-
-
-def scrap_category(url_category):
-    all_urls = scrap_books_urls_in_category(url_category)
-    result = scrap_data_func(all_urls)
-    write_csv_func(result)
-    # cover_ddl_func(result)
-
-# scrap_books_urls_in_category('http://books.toscrape.com/catalogue/category/books/sequential-art_5/index.html')

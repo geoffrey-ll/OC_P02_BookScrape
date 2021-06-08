@@ -1,9 +1,8 @@
 import wget
-from slugify import slugify
 
 import os
 import re
-
+import time
 
 
 def cover_ddl_func(data_desired, option):
@@ -36,7 +35,6 @@ def cover_ddl_func(data_desired, option):
     # Vérifie que la cover 'folder_cover/title_adjust.jpg' n'existe pas.
     # Si absente alors la download.
     for idx in range(len(data_desired['image_url'])):
-        # text = all_data['title'][idx].lower().replace('"', '\'').replace(' ', '_')
         title_adjust = re.sub('[\\\\/<>|]', '', data_desired['title'][idx].lower()
                               .replace('?', '¿')
                               .replace('*', '^')
@@ -45,7 +43,6 @@ def cover_ddl_func(data_desired, option):
                               .replace(' ','_'))
 
         upc_book = '_upc_' + data_desired['universal_product_code (upc)'][idx] + '.jpg'
-       #  title_adjust = upc + '-' + slugify
         start_name_cover = folder_cover + '/' + title_adjust
         name_cover = start_name_cover + upc_book
         if os.path.exists(name_cover) == False:
@@ -84,10 +81,7 @@ def cover_ddl_func(data_desired, option):
                 # On vérifie qu'il n'existe pas déjà une cover du même nom, pour
                 # éviter les download inutile et réduire la durée du script.
                 if os.path.exists(short_name) == False:
+                    time.sleep(0.1)
                     wget.download(data_desired['image_url'][idx], out=short_name)
             else:
                 wget.download(data_desired['image_url'][idx], out=name_cover)
-
-# telecharger_images()
-
-#.re.sub([typefont_no], '-')

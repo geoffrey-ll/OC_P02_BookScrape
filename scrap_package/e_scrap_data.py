@@ -1,7 +1,8 @@
-import requests as rq
 from bs4 import BeautifulSoup
+
 import re
 
+import scrap_package as sp
 
 # docstring à créer pour cette fonction (selon pylint).
 # Collecte de toutes les informations pour chaque url contenues dans la liste
@@ -28,7 +29,7 @@ def scrap_data_func(url_books):
                     'image_url': []}
 
     for url_book in url_books:
-        response_url_book = rq.get(url_book)
+        response_url_book = sp.rq_resp(url_book)
         # Nécessaire de préciser à BeautifulSoup que le contenu de
         # response_url_book doit être lu en tant que utf-8.
         # Cela permet la compréhension de tout les caractères (utile pour
