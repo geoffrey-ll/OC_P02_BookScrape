@@ -6,4 +6,6 @@ from .e_scrap_data import scrap_data_func
 from .f_write_csv import write_data_desired_in_csv_func
 from .g_cover_download import cover_ddl_func
 
-from ._01_requests_with_sleep import requests_respectful as rq_resp
+from . import main_p02_scrap as main
+
+from ._01_sleep_requests_re_attempt import requests_respectful as rq_resp
