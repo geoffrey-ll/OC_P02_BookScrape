@@ -34,13 +34,10 @@ def write_data_desired_in_csv_func(data_desired, option):
         name_file_temp = start_name_file + upc_book
         path_file = os.getcwd() + '/' + start_name_file + upc_book
         if len(path_file) >= 260:
-            # vital_module_gwet = 15
             # gap_over_limit est le nombre de caractères en trop dans le
             # titre du livre. Dans notre cas, la variable title_adjust.
             gap_over_limit = len(name_file_temp) - 260 + len('[…]') + len(upc_book)
             short_name = start_name_file[:-gap_over_limit] + '[…]' + upc_book
-            # On vérifie qu'il n'existe pas déjà une cover du même nom, pour
-            # éviter les download inutile et réduire la durée du script.
             name_file = short_name
         else:
             name_file = start_name_file + upc_book
@@ -76,7 +73,8 @@ def write_data_desired_in_csv_func(data_desired, option):
         # Le noms des clés de data_desired servent comme noms de colonnes.
         # Le choix du delimiter '|' est pour éviter un confilt avec les ',' des
         # prix des livres.
-        data_writer = csv.writer(file_data, delimiter='|')
+        file_data.write('sep=,\n')
+        data_writer = csv.writer(file_data, delimiter=',')
 
         data_writer.writerow(data_desired)
         data_writer.writerow('')
@@ -85,6 +83,3 @@ def write_data_desired_in_csv_func(data_desired, option):
             for key in data_desired.keys():
                 row.append(data_desired[key][idx])
             data_writer.writerow(row)
-
-def write_csv_func(category_dict):
-    pass

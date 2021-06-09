@@ -30,7 +30,7 @@ def main(user_args):
                         -'all'
                         -'input'
         Ce paramètre est à entrer dans le terminal, après le nom du script.
-        Exemple : python llopis_scrap.py all
+        :example: python llopis_scrap.py all
 
     :param user_args[1]: Pour les options 'book' et 'category', il est
         nécessaire de renseigner un paramétre supplémentaire. Il s'agit de l'url
@@ -44,23 +44,23 @@ def main(user_args):
     :type user_args[0]: str
     :type user_args[1]: str, plus précisément, une url provenant du site 'books.toscrape.com/'
 
-    :return: rien.
+    :return: Appelle la fonction correspondant à l'option choisit.
 
     :exception: Si les paramètres ne correspondent pas à l'utilisation du
         script, affiche le type d'erreur, puis affiche la description.
     '''
     try:
         if user_args[1] == 'book':
-            sp.main.with_book(user_args[2])
+            return sp.main.main_with_book(user_args[2])
 
         elif user_args[1] == 'category':
-            sp.main.main_with_category(user_args[2])
+            return sp.main.main_with_category(user_args[2])
 
         elif user_args[1] == 'all':
-            sp.main.main_with_all()
+            return sp.main.main_with_all()
 
         elif user_args[1] == 'input':
-            sp.main.main_with_input()
+            return sp.main.main_with_input()
 
         else:
             description()

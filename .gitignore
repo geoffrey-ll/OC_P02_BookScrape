@@ -3,6 +3,7 @@ venv/
 .idea/
 output/
 test/
+presentation/
 
 test.py
 sandbox.py
@@ -11,6 +12,7 @@ sandbox.py
 commit.txt
 TODO.txt
 message_for_commit.txt
+
 
 # Created by https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,pycharm,windows,macos,linux
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,visualstudiocode,pycharm,windows,macos,linux
