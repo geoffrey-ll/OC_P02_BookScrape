@@ -13,8 +13,7 @@ def selection_category_for_scrap_func(all_url_home_page_category_book):
     # à la liste nommée category_possible.
     def collect_category_possible(all_url_home_page_category_book):
         for category_book in all_url_home_page_category_book:
-            category_possible.append(category_book[51:-13]
-                                     .replace('_', '')
+            category_possible.append(re.sub('^.+books/|_[0-9]+.+$', '', category_book)
                                      .replace('-', ' ')
                                      .capitalize())
         demand_of_user_what_category_to_scrap()
@@ -112,27 +111,23 @@ def selection_category_for_scrap_func(all_url_home_page_category_book):
             analyze_and_collect_input_user(all_input_user)
         elif all_input_user == '-all':
             # Utilisation d'un compteur pour quitter aisément la boucle.
-            counter_of_confirm = 0
-            while counter_of_confirm == 0:
-                print('\nVous avez choisit TOUTES les catégories :')
-                confirmation_select_category = \
-                    input(('{0:<5} : {1}\n' +
-                           '{2:<5} : {3}\n')
-                          .format('y/n', 'confirmer/refaire la sélection',
-                                  '-quit', 'interrompt le script'))
-                if confirmation_select_category == 'y':
-                    for index_cat, cat in enumerate(category_possible):
-                        category_validate_to_scrap \
-                            .append(category_possible[index_cat])
-                        counter_of_confirm += 1
-                elif confirmation_select_category == 'n':
-                    counter_of_confirm += 1
-                    demand_of_user_what_category_to_scrap()
-                elif confirmation_select_category == '-quit':
-                    sys.exit()
-                elif confirmation_select_category != 'y' \
-                        and confirmation_select_category != 'n':
-                    print('\nRéponse invalide')
+            print('\nVous avez choisit TOUTES les catégories :')
+            confirmation_select_category = \
+                input(('{0:<5} : {1}\n' +
+                       '{2:<5} : {3}\n')
+                      .format('y/n', 'confirmer/refaire la sélection',
+                              '-quit', 'interrompt le script'))
+            if confirmation_select_category == 'y':
+                for index_cat, cat in enumerate(category_possible):
+                    category_validate_to_scrap \
+                        .append(category_possible[index_cat])
+            elif confirmation_select_category == 'n':
+                demand_of_user_what_category_to_scrap()
+            elif confirmation_select_category == '-quit':
+                sys.exit()
+            elif confirmation_select_category != 'y' \
+                    and confirmation_select_category != 'n':
+                print('\nRéponse invalide')
         elif all_input_user == '-quit':
             sys.exit()
         elif all_input_user != '-list' and all_input_user != '-all':
@@ -243,14 +238,20 @@ def selection_category_for_scrap_func(all_url_home_page_category_book):
 
     url_home_category_to_scrap = []
     def category_to_scrap(category_validate_to_scrap):
-        if len(category_validate_to_scrap) != 0:
+        if len(category_validate_to_scrap) == 50:
+            for url in all_url_home_page_category_book:
+                url_home_category_to_scrap.append(url)
+
+        elif len(category_validate_to_scrap) != 0 and len(category_validate_to_scrap) != 50:
             for category in category_validate_to_scrap:
                 temp_for_search = category.replace(' ', '-').lower()
                 for idx, url in enumerate(all_url_home_page_category_book):
-                    similarity = re.findall(temp_for_search + '_', url)
+                    similarity = re.findall('^.+books/' + temp_for_search + '_', url)
                     if similarity != []:
                         url_home_category_to_scrap.append(url)
+                        break
             return url_home_category_to_scrap
+
         else:
             print('Aucunes catégories de livres n\'a été renseigné')
 
