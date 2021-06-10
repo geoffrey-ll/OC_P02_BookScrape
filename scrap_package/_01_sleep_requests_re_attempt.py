@@ -6,11 +6,12 @@ import time
 
 def requests_respectful(url):
     count_attempt = 0
-    time.sleep(0.1)
+    time.sleep(0.5)
     response = rq.get(url)
     if response.ok != True:
         while response.ok != True and count_attempt != 9:
             count_attempt += 1
+            time.sleep(0.5)
             response = rq.get(url)
         return response
     else:

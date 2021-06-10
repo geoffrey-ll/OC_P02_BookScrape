@@ -81,7 +81,8 @@ def cover_ddl_func(data_desired, option):
                 # On vérifie qu'il n'existe pas déjà une cover du même nom, pour
                 # éviter les download inutile et réduire la durée du script.
                 if os.path.exists(short_name) == False:
-                    time.sleep(0.1)
+                    time.sleep(0.5)
                     wget.download(data_desired['image_url'][idx], out=short_name)
             else:
+                time.sleep(0.5)
                 wget.download(data_desired['image_url'][idx], out=name_cover)

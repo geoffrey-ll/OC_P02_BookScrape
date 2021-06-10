@@ -23,6 +23,8 @@ def write_data_desired_in_csv_func(data_desired, option):
 
     # Nom et chemin du fichier .csv
     if option == 'book_option':
+        if os.path.exists('output/zingle') == False:
+            os.mkdir('output/zingle')
         title_adjust = re.sub('[\\\\/<>|]', '', data_desired['title'][0].lower()
                               .replace('?', '¿')
                               .replace('*', '^')
@@ -73,8 +75,8 @@ def write_data_desired_in_csv_func(data_desired, option):
         # Le noms des clés de data_desired servent comme noms de colonnes.
         # Le choix du delimiter '|' est pour éviter un confilt avec les ',' des
         # prix des livres.
-        file_data.write('sep=,\n')
-        data_writer = csv.writer(file_data, delimiter=',')
+        file_data.write('sep=|\n')
+        data_writer = csv.writer(file_data, delimiter='|')
 
         data_writer.writerow(data_desired)
         data_writer.writerow('')

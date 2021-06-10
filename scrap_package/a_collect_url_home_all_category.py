@@ -8,6 +8,16 @@ import scrap_package as sp
 # Collecte les url_home_categery_book de chaqu'une des catégries de livres du
 # site : http://books.toscrape.com/.
 def collect_url_home_all_category_func(url_site):
+    '''
+        Ce module sert lors des options 'all' et 'input'. Il récupére les
+        'http://category_url/index.html' de toutes les catégories de livres
+        présentent sur le site. Cette collecte ce fait depuis l'url de page
+        d'accueil du site.
+
+    :param url_site: Une constante URL_SITE_HOME
+    :return:
+    '''
+
     # URL_HOME_SITE est la page d'accueil du site scrapper.
     URL_HOME_SITE = 'http://books.toscrape.com/'
 

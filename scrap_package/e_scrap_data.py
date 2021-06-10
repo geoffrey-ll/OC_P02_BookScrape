@@ -83,6 +83,4 @@ def scrap_data_func(url_books):
         data_desired['image_url'] \
             .append(
             str('https://books.toscrape.com/' + str(img_url_cover_book[6:])))
-    # time.sleep()
-    # write_data_desired_in_csv(data_desired)
     return data_desired

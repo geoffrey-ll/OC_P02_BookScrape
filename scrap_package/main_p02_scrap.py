@@ -21,7 +21,7 @@ def main_with_book(url_input):
 def main_with_category(url_input):
     category = re.sub('^.+books/|_[0-9]+.+$', '', url_input).capitalize().replace('-', ' ')
     print('\nLa catégorie \'{}\' est en cours.'.format(category))
-    print('\nScrap des données en cours')
+    print('\nScrap en cours')
     url_books_of_category = sp.scrap_books_urls_in_category_func(url_input)
     url_books_ok = sp.check_url_books_func(url_books_of_category)
     data = sp.scrap_data_func(url_books_ok)
@@ -64,7 +64,7 @@ def main_with_all():
         sp.write_data_desired_in_csv_func(data_desired, 'all_option')
         print('Écriture du .csv terminé')
         print('Téléchargement des .jpg en cours')
-        sp.cover_ddl_func(data_desired, 'all_option')
+        sp.cover_ddl_func(data_desired, 'all_option') # Identique aux lignes 24 à 31 de l'option 'category'
 
     print('\n\nDonnées récupérées pour TOUTES les catégories.')
 
@@ -86,7 +86,7 @@ def main_with_input():
         sp.write_data_desired_in_csv_func(data, 'input_option')
         print('Écriture du .csv terminé')
         print('Téléchargement des .jpg en cours')
-        sp.cover_ddl_func(data, 'input_option')
+        sp.cover_ddl_func(data, 'input_option')     # Mếme boucle que pour l'option 'all'
 
     # Message de fin selon les catégories sélectionnées.
     if len(category) == 0:
@@ -104,7 +104,7 @@ def main_with_input():
         print(''.join(message_end))
 
     elif len(category) >= 10 and len(category) != 50:
-        print('\n\nDonnées récupérées pour l\'ensemble des catégories choisit.')
+        print('\n\nDonnées récupérées pour l\'ensemble des catégories choisit.') # Différent message selon tel ou tel conditinos.
 
     else:
         print('\n\nDonnées récupérées pour TOUTES les catégories.')
