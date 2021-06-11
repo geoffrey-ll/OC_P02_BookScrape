@@ -8,9 +8,21 @@
 ![open_source](https://img.shields.io/badge/licence-libre-darkkhaki?labelColor=red&style=plastic)
 
 
-# llopis_scrap.py #
+# llopis_scraper_books_online.py #
 
-## Description. ##
+1.  [Description](#description)
+2.  [Utilisation](#utilisation)
+3.  [Installation](#installation)
+    1.  [Environnement virtuel](#environnement-virtuel)
+    2.  [Requierements](#requierements)
+4.  [À propos](#a-propos)
+    1.  [Package](#package)
+    2.  [Bugs connus](#bugs-connus)
+    3.  [Idées d'améliorations](#idees-d-ameliorations)
+
+
+## 1. Description ##
+
 
 Ce script à été réalisé dans le cadre d'un projet du parcours 'Développeur d'application - Python' d'OpenClassROoms.
 
@@ -40,7 +52,7 @@ Le script affiche sa progression en cours d'éxécution.\
 - Relancer le llopis_scrap.py réécrira le .csv de la catégorie, mais ne retéléchargera pas les couvertures si celles-ci existent déjà. 
 
 
-## Utilisation ##
+## 2. Utilisation ##
 
 Le script s'utilise à partir d'un terminal, de 4 façons différentes.
 
@@ -61,7 +73,7 @@ Les .csv et couvertures de livres sont stockés au même endroit.\
 La sélection se fait par demande d'input à l'utilisateur.
 
 
-## Installation ##
+## 3. Installation ##
 
 Dans les sous-sections suivantes, les lignes de commande sont illustrées depuis le répertoire de travail :\
 ![working_directory](readme/working_directory.jpg)\
@@ -69,7 +81,7 @@ Les différents fichiers du script s'y trouvent.\
 Pour utiliser les lignes de commandes, il faut que votre répertoire de travail, soit celui où se trouvent les différents fichiers du script.
 
 
-### Environnement virtuel ###
+### i. Environnement virtuel ###
 
 Sous Windows, avec l'IDE PyCharm.
 
@@ -84,16 +96,16 @@ Cela créra un environement virtuel nommé 'env'
 ![command_line_activate_env](readme/command_line_activate_env.jpg)
 
 
-### Requierements ###
+### ii. Requierements ###
 
 Une fois l'environnement virtuel activé, lancer la commande suivante :\
 ![command_line_install_requierements](readme/command_line_install_requierements.jpg)\
 Cela installera tous les modules renseignés dans le fichier requierements.txt.
 
 
-## À propos ##
+## 4. À propos <a name="a-propos"></a> ###
 
-### Package ###
+### i. Package ###
 
 llopis_scrap.py utilise un ensemble de modules locals, réunis dans le package scrap_package.
 
@@ -156,13 +168,30 @@ Ce module sert de main pour les 4 options disponible.
     - Output : Le bon enchaînement des modules.
 
 
+### ii. Bugs connus  ###
 
-### Bugs connus ###
-Indiquer une solution envisagée pour sa réparation
+- Lors de la sélection manuelle via l'option 'input', si l'utilisateur entre ex : '-crime-novels' au lieu de '-crime -novels', la catégorie 'crime' ne sera pas reconnu et le script demandera à l'utilisateur de reformuler le nom.
 
-Si vous trouver un bug, merci de m'envoyer un e-mail @.net
+Si vous trouver un bug, merci de me le signaler sur l'adresse llopis@bug.com
 
-#### Idées d'amélioration (optionnel) ###
-Permettre à l'utilisateur de définir le nombre de caractères à utiliser
-pour le nom de cover.
 
+### iii. Idées d'amélioration <a name="idees-d-ameliorations"></a> ###
+
+- Synthétiser le code, réduire le nombre de lignes et en faciliter la lecture !
+
+- Accentuer la modularité de l’application. Il y a des redites, par exemple la gestion d’erreur de longueur de chemin se trouve dans f_write_csv et dans g_cover_download.
+
+- Permettre à l’utilisateur de choisir le répertoire de stockage des données,. Éventuellement son arborescence et sa nomenclature.
+
+- Harmoniser et croiser les données scraper sur les différents sites. Je m’explique. Books to scrap n’indique pas l’auteur des livres, il est probable que d’autres librairie mentionne l’auteur. Si l’auteur est récupéré sur un site et que sur autre il ne sont pas indique alors faire une recherche pour ajouter l’info manquantes. Soit dans nos infos collectées, soit sur le web.
+
+- Une gestion d’erreur qui vérifierait que le site ne mettent pas les données qui nous intéressent dans d’autres balises. Les mises à jour de site ne sont pas si fréquentes, mais elle ne sont pas rare non plus.
+
+- Passer à une interface graphique qui reprenne dans l’idée, le menu input. Sélection par cliquer ou en entrant le numéro de la catégorie.
+
+- Ajouter une fonctionnalité d’archivage. Au lieu d’écraser à chaque fois le csv déjà existant, il faudrait l’archiver et ensuite écrire le nouveau. L’archivage gagnera en importance lors du la mise à jour vers une surveillance en direct.
+
+- Dans la suite logique de l’archivage, il faudrait exploiter l’archivage pour construire un historique des prix.
+ -Si l’on scrap vers des librairies avec des devises différents, ajouter un module de conversion des devises. Il irait récupérer le taux de change sur des sites bancaires fiables et s’actualiserait dans certaines conditions, comme lorsque l’utilisateur consulte les prix ou leur historiques (du coup plusieurs modules pas qu’un seul)
+
+- Permettre à l'utilisateur de définir le nombre de caractères à utiliser pour le nom de cover.
