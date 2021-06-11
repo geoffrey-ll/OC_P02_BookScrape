@@ -82,7 +82,7 @@ def main(user_args):
             return sp.main.main_with_input()
 
         else:
-            description()
+            return description()
 
     except Exception as e:
         print(str(e))

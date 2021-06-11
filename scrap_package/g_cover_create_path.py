@@ -1,11 +1,10 @@
-import wget
-
 import os
 import re
-import time
+
+import scrap_package as sp
 
 
-def cover_ddl_func(data_desired, option):
+def cover_create_path_func(data_desired, option):
     name_category = data_desired.get('category')[0].lower().replace(' ', '_')
 
     # Répertoire de travail du script = './'
@@ -57,16 +56,13 @@ def cover_ddl_func(data_desired, option):
             # sont libres et non 15.
             vital_module_gwet = 15
             # gap_over_limit est le nombre de caractères que l'on va enlever au
-            # title_adjust du livre pour que le chemin fasse 260 caractères.                                            todo contrôle nombre de carac du chemin
+            # title_adjust du livre pour que le chemin fasse 245 caractères.
             gap_over_limit = len(name_cover) - 260 + vital_module_gwet + len('[…]') + len(end_name_cover)
             short_name = start_name_cover[:-gap_over_limit] + '[…]' + end_name_cover
-            # On vérifie qu'il n'existe pas déjà une cover du même nom, pour
-            # éviter les download inutile et réduire la durée du script.
+
             if os.path.exists(short_name) == False:
-                time.sleep(0.5)
-                wget.download(data_desired['image_url'][idx], out=short_name)
+                sp.def_ddl(data_desired['image_url'][idx], short_name)
 
         else:
             if os.path.exists(name_cover) == False:
-                time.sleep(0.5)
-                wget.download(data_desired['image_url'][idx], out=name_cover)
+                sp.def_ddl(data_desired['image_url'][idx], name_cover)

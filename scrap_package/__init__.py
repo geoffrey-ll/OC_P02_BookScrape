@@ -4,8 +4,9 @@ from .c_scrap_books_urls_in_category import scrap_books_urls_in_category_func
 from .d_check_url_books import check_url_books_func
 from .e_scrap_data import scrap_data_func
 from .f_write_csv import write_data_desired_in_csv_func
-from .g_cover_download import cover_ddl_func
+from .g_cover_create_path import cover_create_path_func
 
 from . import main_p02_scrap as main
 
 from ._01_sleep_requests_re_attempt import requests_respectful as rq_resp
+from ._02_defensive_n_responsive_download import defensif_n_responsive_ddl as def_ddl
