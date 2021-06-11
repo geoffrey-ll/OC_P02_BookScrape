@@ -172,14 +172,20 @@ Ce module sert de main pour les 4 options disponible.
 
 - Lors de la sélection manuelle via l'option 'input', si l'utilisateur entre ex : '-crime-novels' au lieu de '-crime -novels', la catégorie 'crime' ne sera pas reconnu et le script demandera à l'utilisateur de reformuler le nom.
 
+- Si l'on tente d'écrire le .csv d'une catégorie, dans un chemin proche de la limite des 260 caractères autorisés par défault sur Windows, l'écriture échouera. Il faut rajouter la gestion de la longueur du chemin pour l'écriture d'une catégorie (comme c'est le cas lors de l'écriture d'un livre) et en profiter pour moduler cette gestion d'erreur.
+
 Si vous trouver un bug, merci de me le signaler sur l'adresse llopis@bug.com
 
 
 ### iii. Idées d'amélioration <a name="idees-d-ameliorations"></a> ###
 
-- Synthétiser le code, réduire le nombre de lignes et en faciliter la lecture !
+- Synthétiser le code, réduire le nombre de lignes et en faciliter la lecture ! Et autant que possible, respecter la PEP 8.
 
 - Accentuer la modularité de l’application. Il y a des redites, par exemple la gestion d’erreur de longueur de chemin se trouve dans f_write_csv et dans g_cover_download.
+
+- Finir les docstrings (reStructuredText). Quels soients complètes selon les standard et faire celles qui n'existens pas encore.
+
+- Faire plus de place à l'anglais dans les commentaires ou les docstrings. Mon niveau actuel ne me le permet pas. 
 
 - Permettre à l’utilisateur de choisir le répertoire de stockage des données,. Éventuellement son arborescence et sa nomenclature.
 

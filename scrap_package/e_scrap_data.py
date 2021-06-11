@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from urllib.parse import urljoin
 
 import re
 
@@ -26,7 +27,8 @@ def scrap_data_func(url_books):
                     'product_description': [],
                     'category': [],
                     'review_rating': [],
-                    'image_url': []}
+                    'image_url': []
+                    }
 
     for url_book in url_books:
         response_url_book = sp.rq_resp(url_book)
@@ -38,49 +40,34 @@ def scrap_data_func(url_books):
         a_category_book = soup_book_home.findAll('a')[3].text
         img_url_cover_book = soup_book_home.findAll('img')[0].attrs.get('src')
 
-        # Ajout des différentes informations dans le dictionnaire data_desired.
         data_desired['product_page_url'].append(url_book)
-        data_desired['universal_product_code (upc)'] \
-            .append(tdstag_content_product_information[0].text)
-        # Ajout d'un espace après le symbole de la livre Sterling (\u00A3)
-        # Remplacement du séparateur décimaux "." en ",".
-        data_desired['price_excluding_tax'] \
-            .append(tdstag_content_product_information[2].text
-                    .replace('.', ',')
-                    .replace('\u00A3', '\u00A3 '))
+        data_desired['universal_product_code (upc)'].append(tdstag_content_product_information[0].text)
+        # Livre Sterling (\u00A3)
+        data_desired['price_excluding_tax'].append(tdstag_content_product_information[2].text
+                                                   .replace('.', ',').replace('\u00A3', '\u00A3 '))
         data_desired['price_including_tax'] \
             .append(tdstag_content_product_information[3].text
-                    .replace('.', ',')
-                    .replace('\u00A3', '\u00A3 '))
-        # Collecte de la quantité d'unité en stock  dans :
-        # "In stock (xx available)" à l'aide d'une expression régulière.
-        # Rq : l'expression régulière est une liste l'un seule élèment.
+                    .replace('.', ',').replace('\u00A3', '\u00A3 '))
+        # Rq : l'expression régulière est une liste d'un seule élèment.
         # Du coup on prend l'index [0] de l'expression régulière,
         # .re.findall()[0] pour éviter que la quantité n'apparaisse sous forme
         # de liste dans le .csv.
-        data_desired['number_available'].append(re\
-            .findall(str("[0-9]+"), tdstag_content_product_information[5].text)[0])
-        # Collecte du titre présent dans la balise h1
+        data_desired['number_available'].append(
+            re.findall(str("[0-9]+"), tdstag_content_product_information[5].text)[0])
         data_desired['title'].append(h1_title_book)
-        # Collecte des informations présentent dans des ptag
-        data_desired['product_description'] \
-            .append(ptag_description_and_rating[3].text)
-        # Dictionnaire pour traduire en français le nombre d'étoiles qu'a un
-        # livre. data_desired['review_rating'] = "xx étoile(s)"
+        data_desired['product_description'].append(ptag_description_and_rating[3].text)
+        # data_desired['review_rating'] = "xx étoile(s)"
         traduction = {'Zero': 'Zéro étoile',
                       'One': 'Une étoile',
                       'Two': 'Deux étoiles',
                       'Three': 'Trois étoiles',
                       'Four': 'Quatre étoiles',
                       'Five': 'Cinq étoiles'}
-        data_desired['review_rating'] \
+        data_desired['review_rating']\
             .append(str(traduction
-                        .get(str(ptag_description_and_rating[2].attrs
-                                 .get('class')[1]))))
-        # Collecte de la catégorie du livre.
+                        .get(str(ptag_description_and_rating[2].attrs.get('class')[1]))))
         data_desired['category'].append(a_category_book)
-        # Recontruction de l'url de l'image de la couverture du livre.
-        data_desired['image_url'] \
-            .append(
-            str('https://books.toscrape.com/' + str(img_url_cover_book[6:])))
+        data_desired['image_url'].append(str('https://books.toscrape.com/' + str(img_url_cover_book[6:])))                      # todo à remplacer par la méthode join
+
+
     return data_desired

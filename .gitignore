@@ -4,6 +4,7 @@ venv/
 output/
 test/
 presentation/
+output_complet/
 
 test.py
 sandbox.py

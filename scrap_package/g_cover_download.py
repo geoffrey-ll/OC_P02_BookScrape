@@ -6,20 +6,12 @@ import time
 
 
 def cover_ddl_func(data_desired, option):
-    # Dans all_data les noms de catégories sont en .capitalize et avec un
-    # espace entre les mots. name_category change cela.
     name_category = data_desired.get('category')[0].lower().replace(' ', '_')
 
-    # Dossier où est exécuté le scrip = './'
-
-    # Vérifie q'il existe un dossier './output'
-    # Sinon crée le dossier.
+    # Répertoire de travail du script = './'
     if os.path.exists('output') == False:
         os.mkdir('output')
 
-    # Vérifie qu'il existe './output/name_category/cover_name_category'
-    # Sinon crée le dossier.
-    folder_cover = ''
     if option == 'book_option':
         folder_cover = 'output/zingle/'
         pass
@@ -28,12 +20,6 @@ def cover_ddl_func(data_desired, option):
         if os.path.exists(folder_cover) == False:
             os.mkdir(folder_cover)
 
-
-    # Dans all_data, les noms des titres de livres ont plusieurs majuscules et
-    # espaces. De plus de nombreux caractères sont interdits dans les noms de
-    # fichiers. title_adjust change cela.
-    # Vérifie que la cover 'folder_cover/title_adjust.jpg' n'existe pas.
-    # Si absente alors la download.
     for idx in range(len(data_desired['image_url'])):
         title_adjust = re.sub('[\\\\/<>|]', '', data_desired['title'][idx].lower()
                               .replace('?', '¿')
@@ -42,17 +28,14 @@ def cover_ddl_func(data_desired, option):
                               .replace('"', '\'')
                               .replace(' ','_'))
 
-        upc_book = '_upc_' + data_desired['universal_product_code (upc)'][idx] + '.jpg'
         start_name_cover = folder_cover + '/' + title_adjust
-        name_cover = start_name_cover + upc_book
-        if os.path.exists(name_cover) == False:
-            # La longueur de chemin complet du fichier de la cover et nécessaire
-            # pour gérer l'exception des noms trop long.
-            path = os.getcwd() + '/' + name_cover
+        end_name_cover = '_upc_' + data_desired['universal_product_code (upc)'][idx] + '.jpg'
+        name_cover = start_name_cover + end_name_cover
+        path = os.getcwd() + '/' + name_cover
 
-            # Gére l'exception des noms trop long. La limite d'un nom, chemin
-            # inclus, pour win 7 et 10 (par défault), est de 260 caractères.
-            #
+        # Sous Windows, un chemin est limité par défault, à 260 caractères.
+        # 15 doivent être réservés pour gwet.
+        if len(path) >= 245:
             # Dans ce total de caractères, il faut en préserver 15 pour le
             # module gwet. En effet, en fin de process, gwet recherche le chemin
             # '.\\le_chemin_indiqué_en_out_(extension_inclus)str_gwet.tmp' où
@@ -72,17 +55,18 @@ def cover_ddl_func(data_desired, option):
             # short_name, dans notre cas, la '\' avant le dossier 'output'.
             # De fait, à la fin du process, seul 14 emplacements de caractères
             # sont libres et non 15.
-            if len(path) >= 245:
-                vital_module_gwet = 15
-                # gap_over_limit est le nombre de caractères en trop dans le
-                # titre du livre. Dans notre cas, la variable title_adjust.
-                gap_over_limit = len(name_cover) - 260 + vital_module_gwet + len('[…]') + len(upc_book)
-                short_name = start_name_cover[:-gap_over_limit] + '[…]' + upc_book
-                # On vérifie qu'il n'existe pas déjà une cover du même nom, pour
-                # éviter les download inutile et réduire la durée du script.
-                if os.path.exists(short_name) == False:
-                    time.sleep(0.5)
-                    wget.download(data_desired['image_url'][idx], out=short_name)
-            else:
+            vital_module_gwet = 15
+            # gap_over_limit est le nombre de caractères que l'on va enlever au
+            # title_adjust du livre pour que le chemin fasse 260 caractères.                                            todo contrôle nombre de carac du chemin
+            gap_over_limit = len(name_cover) - 260 + vital_module_gwet + len('[…]') + len(end_name_cover)
+            short_name = start_name_cover[:-gap_over_limit] + '[…]' + end_name_cover
+            # On vérifie qu'il n'existe pas déjà une cover du même nom, pour
+            # éviter les download inutile et réduire la durée du script.
+            if os.path.exists(short_name) == False:
+                time.sleep(0.5)
+                wget.download(data_desired['image_url'][idx], out=short_name)
+
+        else:
+            if os.path.exists(name_cover) == False:
                 time.sleep(0.5)
                 wget.download(data_desired['image_url'][idx], out=name_cover)
