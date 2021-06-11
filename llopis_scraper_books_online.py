@@ -85,7 +85,6 @@ def main(user_args):
             description()
 
     except Exception as e:
-        pass
         print(str(e))
         return description()
 

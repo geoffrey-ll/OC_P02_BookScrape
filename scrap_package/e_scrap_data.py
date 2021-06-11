@@ -3,12 +3,11 @@ from urllib.parse import urljoin
 
 import re
 
-import scrap_package as sp
 
 # docstring à créer pour cette fonction (selon pylint).
 # Collecte de toutes les informations pour chaque url contenues dans la liste
 # url_books
-def scrap_data_func(url_books):
+def scrap_data_func(response_books_ok, url_books):
     """Collecte de toutes les informations, pour chaque url de livres, contenues
     dans la liste url_book.
 
@@ -17,6 +16,7 @@ def scrap_data_func(url_books):
     :return: dict data_desired Contenant la data extrait depuis chaqu'une des
             urls de livre.
     """
+
 
     data_desired = {'product_page_url': [],
                     'universal_product_code (upc)': [],
@@ -30,9 +30,8 @@ def scrap_data_func(url_books):
                     'image_url': []
                     }
 
-    for url_book in url_books:
-        response_url_book = sp.rq_resp(url_book)
-        soup_book_home = BeautifulSoup(response_url_book.content, 'html.parser')
+    for idx in range(len(response_books_ok)):
+        soup_book_home = BeautifulSoup(response_books_ok[idx].content, 'html.parser')
 
         tdstag_content_product_information = soup_book_home.findAll('td')
         h1_title_book = soup_book_home.find('h1').text
@@ -40,7 +39,7 @@ def scrap_data_func(url_books):
         a_category_book = soup_book_home.findAll('a')[3].text
         img_url_cover_book = soup_book_home.findAll('img')[0].attrs.get('src')
 
-        data_desired['product_page_url'].append(url_book)
+        data_desired['product_page_url'].append(url_books[idx])
         data_desired['universal_product_code (upc)'].append(tdstag_content_product_information[0].text)
         # Livre Sterling (\u00A3)
         data_desired['price_excluding_tax'].append(tdstag_content_product_information[2].text

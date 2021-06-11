@@ -49,8 +49,9 @@ def main_with_book(url_input):
             'image_url': []
             }
     """
-    url_book_ok = sp.check_url_books_func([url_input])
-    data = sp.scrap_data_func(url_book_ok)
+    response_book_ok, url_book = sp.check_url_books_func([url_input])
+
+    data = sp.scrap_data_func(response_book_ok, url_book)
     sp.write_data_desired_in_csv_func(data, 'book_option')
     sp.cover_ddl_func(data, 'book_option')
 
@@ -113,8 +114,8 @@ def main_with_category(url_input):
     print('\nScrap en cours')
 
     url_books_of_category = sp.scrap_books_urls_in_category_func(url_input)
-    url_books_ok = sp.check_url_books_func(url_books_of_category)
-    data = sp.scrap_data_func(url_books_ok)
+    response_books_ok, url_books = sp.check_url_books_func(url_books_of_category)
+    data = sp.scrap_data_func(response_books_ok, url_books)
     sp.write_data_desired_in_csv_func(data, 'category_option')
 
     print('Écriture du .csv terminé')
@@ -222,7 +223,7 @@ def main_with_all():
 
     for idx, url_category in enumerate(all_url_home_pages_category_book):
         category.append(re.sub('^.+books/|_[0-9]+.+$', '', url_category)
-                        .replace('-', '').capitalize())
+                        .replace('-', ' ').capitalize())
 
         print('\n')
         print('La catégorie \'{0}\' ({1}/{2}) est en cours.\n'
@@ -230,8 +231,8 @@ def main_with_all():
         print('Scrap en cours.')
 
         url_books_of_category = sp.scrap_books_urls_in_category_func(url_category)
-        url_books_ok = sp.check_url_books_func(url_books_of_category)
-        data_desired = sp.scrap_data_func(url_books_ok)
+        response_books_ok, url_books = sp.check_url_books_func(url_books_of_category)
+        data_desired = sp.scrap_data_func(response_books_ok, url_books)
         sp.write_data_desired_in_csv_func(data_desired, 'all_option')
 
         print('Écriture du .csv terminé')
@@ -304,8 +305,8 @@ def main_with_input():
         print('Scrap en cours.')
 
         url_books_to_scrap = sp.scrap_books_urls_in_category_func(url_category)
-        url_books_ok = sp.check_url_books_func(url_books_to_scrap)
-        data = sp.scrap_data_func(url_books_ok)
+        response_books_ok, url_books = sp.check_url_books_func(url_books_to_scrap)
+        data = sp.scrap_data_func(response_books_ok, url_books)
         sp.write_data_desired_in_csv_func(data, 'input_option')
 
         print('Écriture du .csv terminé')

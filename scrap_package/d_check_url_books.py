@@ -11,15 +11,18 @@ def check_url_books_func(url_books):
     # url_books.pop(1)
     # url_books.insert(1, url_books[1] + 'l')
     # url_books.pop(2)
+    responses_books_ok = []
     quantity_error_url_book = []
     for url_book in url_books:
         response_url_book = sp.rq_resp(url_book)
         if response_url_book.ok != True:
             quantity_error_url_book.append(url_books.index(url_book))
         else:
-            continue
+            responses_books_ok.append(response_url_book)
+
     if len(quantity_error_url_book) == 0:
-        return url_books
+        return responses_books_ok, url_books
+
     else:
         if len(quantity_error_url_book) == 1:
             print('\nL\'url :\n{0}\nest invalide !'
