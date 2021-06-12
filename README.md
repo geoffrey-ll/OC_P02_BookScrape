@@ -21,7 +21,7 @@
     3.  [Idées d'améliorations](#idees-d-ameliorations)
 
 
-## 1. Description ##
+## 1. Description <a name="description"></a> ##
 
 
 Ce script à été réalisé dans le cadre d'un projet du parcours 'Développeur d'application - Python' d'OpenClassROoms.
@@ -52,7 +52,7 @@ Le script affiche sa progression en cours d'éxécution.\
 - Relancer le llopis_scrap.py réécrira le .csv de la catégorie, mais ne retéléchargera pas les couvertures si celles-ci existent déjà. 
 
 
-## 2. Utilisation ##
+## 2. Utilisation <a name="utilisation"></a> ##
 
 Le script s'utilise à partir d'un terminal, de 4 façons différentes.
 
@@ -73,7 +73,7 @@ Les .csv et couvertures de livres sont stockés au même endroit.\
 La sélection se fait par demande d'input à l'utilisateur.
 
 
-## 3. Installation ##
+## 3. Installation <a name="installation"></a> ##
 
 Dans les sous-sections suivantes, les lignes de commande sont illustrées depuis le répertoire de travail :\
 ![working_directory](readme/working_directory.jpg)\
@@ -81,7 +81,7 @@ Les différents fichiers du script s'y trouvent.\
 Pour utiliser les lignes de commandes, il faut que votre répertoire de travail, soit celui où se trouvent les différents fichiers du script.
 
 
-### i. Environnement virtuel ###
+### i. Environnement virtuel <a name="environnement-virtuel"></a> ###
 
 Sous Windows, avec l'IDE PyCharm.
 
@@ -96,7 +96,7 @@ Cela créra un environement virtuel nommé 'env'
 ![command_line_activate_env](readme/command_line_activate_env.jpg)
 
 
-### ii. Requierements ###
+### ii. Requierements <a name="requierements"></a> ###
 
 Une fois l'environnement virtuel activé, lancer la commande suivante :\
 ![command_line_install_requierements](readme/command_line_install_requierements.jpg)\
@@ -105,7 +105,7 @@ Cela installera tous les modules renseignés dans le fichier requierements.txt.
 
 ## 4. À propos <a name="a-propos"></a> ###
 
-### i. Package ###
+### i. Package <a name="package"></a> ###
 
 llopis_scrap.py utilise un ensemble de modules locals, réunis dans le package scrap_package.
 
@@ -168,7 +168,7 @@ Ce module sert de main pour les 4 options disponible.
     - Output : Le bon enchaînement des modules.
 
 
-### ii. Bugs connus  ###
+### ii. Bugs connus <a name="bugs-connus"></a> ###
 
 - Lors de la sélection manuelle via l'option 'input', si l'utilisateur entre ex : '-crime-novels' au lieu de '-crime -novels', la catégorie 'crime' ne sera pas reconnu et le script demandera à l'utilisateur de reformuler le nom.
 
