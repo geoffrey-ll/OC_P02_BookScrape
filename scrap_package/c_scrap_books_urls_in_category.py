@@ -48,8 +48,6 @@ def scrap_books_urls_in_category_func(url_category):
 
         for number_page in range(2, int(total_page_of_category) + 1):
 
-
-
             url_other_page_category\
                 .append(url_category_home[:-10] + 'page-' + str(number_page) + '.html')
 

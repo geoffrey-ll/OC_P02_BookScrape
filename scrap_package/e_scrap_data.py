@@ -60,6 +60,7 @@ def scrap_data_func(response_books_ok, url_books_ok):
         data_desired['price_including_tax']\
             .append(tdstag_content_product_information[3].text
                     .replace('.', ',').replace('\u00A3', '\u00A3 '))
+
         # Rq : l'expression régulière est une liste d'un seule élèment.
         # Du coup on prend l'index [0] de l'expression régulière,
         # .re.findall()[0] pour éviter que la quantité n'apparaisse sous forme
