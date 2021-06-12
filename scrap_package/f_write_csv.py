@@ -100,7 +100,6 @@ def write_data_desired_in_csv_func(data_desired, option):
     if os.path.exists('output') == False:
         os.mkdir('output')
 
-    # Nom et chemin du .csv
     if option == 'book_option':
         if os.path.exists('output/zingle') == False:
             os.mkdir('output/zingle')

@@ -4,17 +4,30 @@ from urllib.parse import urljoin
 import re
 
 
-# docstring à créer pour cette fonction (selon pylint).
-# Collecte de toutes les informations pour chaque url contenues dans la liste
-# url_books
 def scrap_data_func(response_books_ok, url_books):
-    """Collecte de toutes les informations, pour chaque url de livres, contenues
+    """
+        Collecte de toutes les informations, pour chaque url de livres, contenues
     dans la liste url_book.
 
-    :param url_books: list Ensemble des urls de livre sur lequelles extraire la
-                        data.
-    :return: dict data_desired Contenant la data extrait depuis chaqu'une des
-            urls de livre.
+    :proceedings:
+
+    :param response_books_ok:
+        Toutes les response exploitables, revenu avec un code 200.
+
+    :param url_books:
+        list Ensemble des urls de livre sur lequelles extraire la
+        data.
+
+    :type response_books_ok:
+        list de response à des requests
+
+    :type url_books:
+        list de str. Un ensemble d'url de page d'accueils de livres du site
+        https://books.toscrape.com/
+
+    :return:
+        dict data_desired Contenant la data extrait depuis chaqu'une des
+        urls de livre.
     """
 
 
@@ -44,7 +57,7 @@ def scrap_data_func(response_books_ok, url_books):
         # Livre Sterling (\u00A3)
         data_desired['price_excluding_tax'].append(tdstag_content_product_information[2].text
                                                    .replace('.', ',').replace('\u00A3', '\u00A3 '))
-        data_desired['price_including_tax'] \
+        data_desired['price_including_tax']\
             .append(tdstag_content_product_information[3].text
                     .replace('.', ',').replace('\u00A3', '\u00A3 '))
         # Rq : l'expression régulière est une liste d'un seule élèment.
@@ -66,7 +79,7 @@ def scrap_data_func(response_books_ok, url_books):
             .append(str(traduction
                         .get(str(ptag_description_and_rating[2].attrs.get('class')[1]))))
         data_desired['category'].append(a_category_book)
-        data_desired['image_url'].append(str('https://books.toscrape.com/' + str(img_url_cover_book[6:])))                      # todo à remplacer par la méthode join
-
+        data_desired['image_url']\
+            .append(urljoin('https://books.toscrape.com/', img_url_cover_book))
 
     return data_desired

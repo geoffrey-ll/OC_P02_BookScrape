@@ -5,18 +5,29 @@ import sys
 
 import scrap_package as sp
 
-# Collecte les url_home_categery_book de chaqu'une des catégries de livres du
-# site : http://books.toscrape.com/.
+
 def collect_url_home_all_category_func(url_site):
-    '''
-        Ce module sert lors des options 'all' et 'input'. Il récupére les
-        'http://category_url/index.html' de toutes les catégories de livres
-        présentent sur le site. Cette collecte ce fait depuis l'url de page
-        d'accueil du site.
+    """
+        Collecte la home page de toutes les catégories de livre du site
+        'https://books.toscrape.com/'.
+
+    Ce module n'est appelé qu'avec les options 'all' et 'input'. La collecte ce
+    fait par scraping de la home page du site.
+    :example:
+        'https://books.toscrape.com/catalogue/category/books/mystery_3/index.html'
+
+    :proceedings:
 
     :param url_site: Une constante URL_SITE_HOME
+        Une CONSTANTE permettant de vériféier que l'url du site est exploitable.
+
+    :type url_site:
+        list de str.
+
     :return:
-    '''
+        url_home_all_category_book, contenant la home page de toutes les
+        catégories de livre.
+    """
 
     # URL_HOME_SITE est la page d'accueil du site scrapper.
     URL_HOME_SITE = 'http://books.toscrape.com/'
@@ -27,17 +38,8 @@ def collect_url_home_all_category_func(url_site):
     if url_site != 'URL_HOME_SITE':
         URL_HOME_SITE = str(url_site)
 
-
-
     response_url_home_site = sp.rq_resp(URL_HOME_SITE)
 
-    # Controle de l'url à impléementer. Vérification que l'url ne pointe pas
-    # vers une page type "Hum, nou ne parvenons pas à trouver ce site".
-    # Une telle page ne semble pas retouner code html lors de la requeste.get().
-    # Dessous ce qui a été tenté, mais qui ne fut pas fructueux.
-
-    # Message d'erreur et renvoi vers une main_p02_scrap.py pour ne pas
-    # poursuivre le script avec une url invalide.
     if response_url_home_site.ok != True:
         print('\nL\'accès au site \'{}\' est impossible.'.format(URL_HOME_SITE))
         return 0
@@ -48,19 +50,19 @@ def collect_url_home_all_category_func(url_site):
     # l'interrompt.
     if response_url_home_site.ok == True:
         URL_P02 = 'http://books.toscrape.com'
+
         if URL_HOME_SITE != URL_P02 and URL_HOME_SITE != URL_P02 + '/':
             print('\nCe scrip à été réalisé dans le cadre du deuxième projet du parcours '
                   '\'Développeur d\'application - Python\' d\'OpenClassRooms.\n'
                   'Il n\'est pas adapté pour scraper un site différent de \'http://books.toscrape.com/\'\n\n'
                   'À bientôt sur ce site.'.format(URL_HOME_SITE))
-            sys.exit()
 
+            sys.exit()
 
     # Seules les pages d'accueil des catégories de livres contiennent
     # '/category/books/'. Je m'en sert donc pour détecter le noms des catégories
     # puis reconsruction des urls.
     soup_home_site = BeautifulSoup(response_url_home_site.content, 'html.parser')
-
 
     atag_home_site = soup_home_site.findAll('a')
     url_home_all_category_book = []

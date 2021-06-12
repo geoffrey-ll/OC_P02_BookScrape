@@ -5,6 +5,43 @@ import scrap_package as sp
 
 
 def cover_create_path_func(data_desired, option):
+    """
+        Gére la création des dossiers et génère les chemins des fichiers.
+
+    :proceedings:
+
+    :param data_desired:
+         Le dictionnaire contenant les donnése scrapées.
+
+    :param option:
+        Un marqueur génèré par le main de l'option, pour indique l'option qui
+        est en train de s'exécuter.
+
+    :type data_desired:
+        dict
+        {
+        'product_page_url': [],
+        'universal_product_code (upc)': [],
+        'title': [],
+        'price_including_tax': [],
+        'price_excluding_tax': [],
+        'number_available': [],
+        'product_description': [],
+        'category': [],
+        'review_rating': [],
+        'image_url': []
+        }
+
+    :type option:
+        str. Il peut avoir pour valeurs : 'book_option' ou 'category_option' ou
+        'all_option' ou encore 'input_option'.
+
+    :returns:
+        Plutôt des Load que des returns.
+        Les dossiers nécessaires qui n'existent pas.
+        Génère le les chemins des fichiers.
+
+    """
     name_category = data_desired.get('category')[0].lower().replace(' ', '_')
 
     # Répertoire de travail du script = './'
