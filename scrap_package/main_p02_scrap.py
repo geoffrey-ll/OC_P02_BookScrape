@@ -53,7 +53,7 @@ def main_with_book(url_input):
 
     data = sp.scrap_data_func(response_book_ok, url_book)
     sp.write_data_desired_in_csv_func(data, 'book_option')
-    sp.cover_create_path_func(data, 'book_option')
+    sp.cover_generate_path_func(data, 'book_option')
 
     print('\nDonnées récupérées pour le livre \'{}\'.'.format(data['title'][0]))
 
@@ -121,7 +121,7 @@ def main_with_category(url_input):
     print('Écriture du .csv terminé')
     print('Téléchargement des .jpg en cours')
 
-    sp.cover_create_path_func(data, 'category_option')
+    sp.cover_generate_path_func(data, 'category_option')
 
     print('\n\nDonnées récupérées pour la catégorie \'{}\''.format(category))
 
@@ -238,7 +238,7 @@ def main_with_all():
         print('Écriture du .csv terminé')
         print('Téléchargement des .jpg en cours')
 
-        sp.cover_create_path_func(data_desired, 'all_option')
+        sp.cover_generate_path_func(data_desired, 'all_option')
 
     print('\n\nDonnées récupérées pour TOUTES les catégories.')
 
@@ -312,7 +312,7 @@ def main_with_input():
         print('Écriture du .csv terminé')
         print('Téléchargement des .jpg en cours')
 
-        sp.cover_create_path_func(data, 'input_option')
+        sp.cover_generate_path_func(data, 'input_option')
 
     # Message de fin selon les catégories sélectionnées.
     if len(category) == 0:

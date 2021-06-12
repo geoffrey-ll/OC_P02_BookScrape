@@ -2,16 +2,12 @@ env/
 venv/
 .idea/
 output/
-test/
-presentation/
 output_complet/
 
 test.py
 sandbox.py
 *.csv
 
-commit.txt
-TODO.txt
 message_for_commit.txt
 
 

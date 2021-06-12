@@ -4,7 +4,7 @@ from urllib.parse import urljoin
 import re
 
 
-def scrap_data_func(response_books_ok, url_books):
+def scrap_data_func(response_books_ok, url_books_ok):
     """
         Collecte de toutes les informations, pour chaque url de livres, contenues
     dans la liste url_book.
@@ -14,14 +14,14 @@ def scrap_data_func(response_books_ok, url_books):
     :param response_books_ok:
         Toutes les response exploitables, revenu avec un code 200.
 
-    :param url_books:
+    :param url_books_ok:
         list Ensemble des urls de livre sur lequelles extraire la
         data.
 
     :type response_books_ok:
         list de response à des requests
 
-    :type url_books:
+    :type url_books_ok:
         list de str. Un ensemble d'url de page d'accueils de livres du site
         https://books.toscrape.com/
 
@@ -52,7 +52,7 @@ def scrap_data_func(response_books_ok, url_books):
         a_category_book = soup_book_home.findAll('a')[3].text
         img_url_cover_book = soup_book_home.findAll('img')[0].attrs.get('src')
 
-        data_desired['product_page_url'].append(url_books[idx])
+        data_desired['product_page_url'].append(url_books_ok[idx])
         data_desired['universal_product_code (upc)'].append(tdstag_content_product_information[0].text)
         # Livre Sterling (\u00A3)
         data_desired['price_excluding_tax'].append(tdstag_content_product_information[2].text

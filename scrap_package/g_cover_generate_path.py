@@ -4,9 +4,9 @@ import re
 import scrap_package as sp
 
 
-def cover_create_path_func(data_desired, option):
+def cover_generate_path_func(data_desired, option):
     """
-        Gére la création des dossiers et génère les chemins des fichiers.
+        Gére la création des dossiers et génére les chemins des fichiers.
 
     :proceedings:
 
@@ -14,7 +14,7 @@ def cover_create_path_func(data_desired, option):
          Le dictionnaire contenant les donnése scrapées.
 
     :param option:
-        Un marqueur génèré par le main de l'option, pour indique l'option qui
+        Un marqueur généré par le main de l'option, pour indiquer l'option qui
         est en train de s'exécuter.
 
     :type data_desired:
@@ -39,7 +39,7 @@ def cover_create_path_func(data_desired, option):
     :returns:
         Plutôt des Load que des returns.
         Les dossiers nécessaires qui n'existent pas.
-        Génère le les chemins des fichiers.
+        Génére les chemins des fichiers.
 
     """
     name_category = data_desired.get('category')[0].lower().replace(' ', '_')
